@@ -3,6 +3,8 @@ layout: default
 title: {{ site.name }}
 ---
 
+## Introduction
+
 TBOX is a glib-like cross-platform C library that is simple to use yet powerful in nature.
 
 The project focuses on making C development easier and provides many modules (.e.g stream, coroutine, regex, container, algorithm ...), 

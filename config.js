@@ -3,7 +3,7 @@ var langs = [
   {title: '中文', path: '/zh/'},
 ]
 
-self.$config = {
+docute.init({
     landing: true,
     repo: 'tboox/tbox',
     twitter: 'waruqi',
@@ -58,4 +58,4 @@ self.$config = {
       tags: ['en', 'zh']
     })
   ]
-}
+})
