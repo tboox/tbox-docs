@@ -3,9 +3,46 @@ nav: zh
 search: zh
 ---
 
-# 一个用c语言实现的跨平台开发库
+<div align="center">
+  <h1>tbox</h1>
 
-[![Build Status](https://api.travis-ci.org/tboox/tbox.svg)](https://travis-ci.org/tboox/tbox) [![Build status](https://ci.appveyor.com/api/projects/status/0pbnea6d059odbe8/branch/master?svg=true)](https://ci.appveyor.com/project/waruqi/tbox/branch/master) [![codecov](https://codecov.io/gh/tboox/tbox/branch/master/graph/badge.svg)](https://codecov.io/gh/tboox/tbox) [![Join the chat at https://gitter.im/waruqi/tboox](https://badges.gitter.im/waruqi/tboox.svg)](https://gitter.im/waruqi/tboox?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge) [![donate](http://tboox.org/static/img/donate.svg)](http://tboox.org/donation/)
+  <div>
+    <a href="https://travis-ci.org/tboox/tbox">
+      <img src="https://img.shields.io/travis/tboox/tbox/master.svg?style=flat-square" alt="travis-ci" />
+    </a>
+    <a href="https://ci.appveyor.com/project/waruqi/tbox/branch/master">
+      <img src="https://img.shields.io/appveyor/ci/waruqi/tbox/master.svg?style=flat-square" alt="appveyor-ci" />
+    </a>
+    <a href="https://codecov.io/gh/tboox/tbox">
+      <img src="https://img.shields.io/codecov/c/github/tboox/tbox/master.svg?style=flat-square" alt="Coverage" />
+    </a>
+    <a href="https://github.com/tboox/tbox/releases">
+      <img src="https://img.shields.io/github/release/tboox/tbox.svg?style=flat-square" alt="Github All Releases" />
+    </a>
+  </div>
+  <div>
+    <a href="https://github.com/tboox/tbox/blob/master/LICENSE.md">
+      <img src="https://img.shields.io/github/license/tboox/tbox.svg?colorB=f48041&style=flat-square" alt="license" />
+    </a>
+    <a href="https://www.reddit.com/r/tboox/">
+      <img src="https://img.shields.io/badge/chat-on%20reddit-ff3f34.svg?style=flat-square" alt="Reddit" />
+    </a>
+    <a href="https://gitter.im/tboox/tboox?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge">
+      <img src="https://img.shields.io/gitter/room/tboox/tboox.svg?style=flat-square&colorB=96c312" alt="Gitter" />
+    </a>
+    <a href="https://t.me/tbooxorg">
+      <img src="https://img.shields.io/badge/chat-on%20telegram-blue.svg?style=flat-square" alt="Telegram" />
+    </a>
+    <a href="https://jq.qq.com/?_wv=1027&k=5hpwWFv">
+      <img src="https://img.shields.io/badge/chat-on%20QQ-ff69b4.svg?style=flat-square" alt="QQ" />
+    </a>
+    <a href="http://tboox.org/donation/">
+      <img src="https://img.shields.io/badge/donate-us-orange.svg?style=flat-square" alt="Donate" />
+    </a>
+  </div>
+
+  <p>一个用c语言实现的跨平台开发库</p>
+</div>
 
 ## 简介
 
@@ -27,14 +64,15 @@ TBOX是一个用c语言实现的跨平台开发库。
 
 * Release: 正式版编译，禁用调试信息、断言，各种检测机制，启用编译器优化
 * Debug: 调试模式，默认启用详细调试信息、断言、内存越界检测、内存泄漏、锁竞争分析等检测机制
-* Small: 默认禁用所有扩展模块，启用编译器最小化优化
+* Small: 最小化编译，默认禁用所有扩展模块，启用编译器最小化优化
 * Micro: 针对嵌入式平台，仅仅编译tbox微内核，仅提供最基础的跨平台接口，生成库仅64K左右（内置轻量libc接口实现）
 
 如果你想了解更多，请参考：
 
-* [在线文档](https://github.com/waruqi/tbox/wiki/%E7%9B%AE%E5%BD%95)
-* [在线源码](https://github.com/waruqi/tbox)
 * [项目主页](http://www.tboox.org/cn)
+* [在线文档](https://github.com/tboox/tbox/wiki/%E7%9B%AE%E5%BD%95)
+* [Github](https://github.com/tboox/tbox)
+* [Gitee](https://gitee.com/tboox/tbox)
 
 ## 特性
 
@@ -58,6 +96,7 @@ TBOX是一个用c语言实现的跨平台开发库。
 - socket、stream都模块原生支持协程，并且可在线程和协程间进行无缝切换
 - 提供http、file等基于协程的简单服务器实例，只需几百行代码，就可以从socket开始写个高性能io服务器，代码逻辑比异步回调模式更加清晰
 - 同时提供stackfull, stackless两种协程模式支持，stackless协程更加的轻量（每个协程只占用几十个bytes），切换更快（会牺牲部分易用性）
+- 支持epoll, kqueue, poll, select 和 IOCP
 
 #### 数据库
 
@@ -160,3 +199,110 @@ TBOX是一个用c语言实现的跨平台开发库。
 - 支持全局、多行、大小写不敏感等模式
 - 使用pcre, pcre2和posix正则库
 
+## 一些使用tbox的项目：
+
+* [gbox](https://github.com/tboox/gbox)
+* [vm86](https://github.com/tboox/vm86)
+* [xmake](http://www.xmake.io/cn)
+* [itrace](https://github.com/tboox/itrace)
+* [更多项目](https://github.com/tboox/tbox/wiki/%E4%BD%BF%E7%94%A8tbox%E7%9A%84%E5%BC%80%E6%BA%90%E5%BA%93)
+
+## 编译 
+
+请先安装: [xmake](https://github.com/tboox/xmake)
+
+```console
+# 默认直接编译当前主机平台
+$ cd ./tbox
+$ xmake
+
+# 编译mingw平台
+$ cd ./tbox
+$ xmake f -p mingw --sdk=/home/mingwsdk 
+$ xmake
+
+# 编译iphoneos平台
+$ cd ./tbox
+$ xmake f -p iphoneos 
+$ xmake
+
+# 编译android平台
+$ cd ./tbox
+$ xmake f -p android --ndk=xxxxx
+$ xmake
+
+# 交叉编译
+$ cd ./tbox
+$ xmake f -p linux --sdk=/home/sdk #--bin=/home/sdk/bin
+$ xmake
+```
+
+## 例子
+
+```c
+#include "tbox/tbox.h"
+
+int main(int argc, char** argv)
+{
+    // init tbox
+    if (!tb_init(tb_null, tb_null)) return 0;
+
+    // trace
+    tb_trace_i("hello tbox");
+
+    // init vector
+    tb_vector_ref_t vector = tb_vector_init(0, tb_element_cstr(tb_true));
+    if (vector)
+    {
+        // insert item
+        tb_vector_insert_tail(vector, "hello");
+        tb_vector_insert_tail(vector, "tbox");
+
+        // dump all items
+        tb_for_all (tb_char_t const*, cstr, vector)
+        {
+            // trace
+            tb_trace_i("%s", cstr);
+        }
+
+        // exit vector
+        tb_vector_exit(vector);
+    }
+
+    // init stream
+    tb_stream_ref_t stream = tb_stream_init_from_url("http://www.xxx.com/file.txt");
+    if (stream)
+    {
+        // open stream
+        if (tb_stream_open(stream))
+        {
+            // read line
+            tb_long_t size = 0;
+            tb_char_t line[TB_STREAM_BLOCK_MAXN];
+            while ((size = tb_stream_bread_line(stream, line, sizeof(line))) >= 0)
+            {
+                // trace
+                tb_trace_i("line: %s", line);
+            }
+        }
+
+        // exit stream
+        tb_stream_exit(stream);
+    }
+
+    // wait 
+    getchar();
+
+    // exit tbox
+    tb_exit();
+    return 0;
+}
+```
+
+## 联系方式
+
+* 邮箱：[waruqi@gmail.com](mailto:waruqi@gmail.com)
+* 主页：[TBOOX开源工程](http://www.tboox.org/cn)
+* 社区：[Reddit论坛](https://www.reddit.com/r/tboox/)
+* QQ群：343118190
+* 微信公众号：tboox-os

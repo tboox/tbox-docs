@@ -3,13 +3,9 @@ layout: default
 title: {{ site.name }}
 ---
 
-# The Treasure Box Library 
-
-## Introduction
-
 TBOX is a glib-like cross-platform C library that is simple to use yet powerful in nature.
 
-The project focuses on making C development easier and provides many modules (.e.g stream, asio, regex, container, algorithm ...), 
+The project focuses on making C development easier and provides many modules (.e.g stream, coroutine, regex, container, algorithm ...), 
 so that any developer can quickly pick it up and enjoy the productivity boost when developing in C language.
 
 It supports the following platforms:
@@ -29,9 +25,10 @@ And it provides many compiling options using [xmake](http://www.xmake.io):
 
 If you want to know more, please refer to:
 
-* [Documents](https://github.com/waruqi/tbox/wiki/documents)
-* [Github](https://github.com/waruqi/tbox)
 * [HomePage](http://tboox.org)
+* [Documents](https://github.com/tboox/tbox/wiki/documents)
+* [Github](https://github.com/tboox/tbox)
+* [Gitee](https://gitee.com/tboox/tbox)
 
 ## Features
 
@@ -52,6 +49,7 @@ If you want to know more, please refer to:
 - Supports io socket and stream operation in coroutine
 - Provides some io servers (http ..) using coroutine
 - Provides stackfull and stackless coroutines
+- Support epoll, kqueue, poll, select and IOCP
 
 #### The database library
 
@@ -149,120 +147,110 @@ If you want to know more, please refer to:
 - Implements some string hash algorithms (.e.g bkdr, fnv32, fnv64, sdbm, djb2, rshash, aphash ...)
 - Implements uuid generator
 
-#### The asynchronous io library (deprecated)
-
-- Please uses coroutine to implement asio programming
-
-## Todolist
-
-- Add server module
-- Reconstruction xml module
-- Add more algorithms and container
-- Optimizes more libc interfaces 
-- Implements more libm interfaces and not wrap it only
-
 ## Projects
 
 Some projects using tbox:
 
-* [gbox](https://github.com/waruqi/gbox)
-* [vm86](https://github.com/waruqi/vm86)
+* [gbox](https://github.com/tboox/gbox)
+* [vm86](https://github.com/tboox/vm86)
 * [xmake](http://www.xmake.io)
-* [itrace](https://github.com/waruqi/itrace)
-* [more](https://github.com/waruqi/tbox/wiki/tbox-projects)
+* [itrace](https://github.com/tboox/itrace)
+* [more](https://github.com/tboox/tbox/wiki/tbox-projects)
 
 ## Build
 
-Please install xmake first: [xmake](https://github.com/waruqi/xmake)
+Please install xmake first: [xmake](https://github.com/tboox/xmake)
 
-    # build for the host platform
-    cd ./tbox
-    xmake
+```console
+# build for the host platform
+$ cd ./tbox
+$ xmake
 
-    # build for the mingw platform
-    cd ./tbox
-    xmake f -p mingw --sdk=/home/mingwsdk 
-    xmake
-    
-    # build for the iphoneos platform
-    cd ./tbox
-    xmake f -p iphoneos 
-    xmake
-    
-    # build for the android platform
-    cd ./tbox
-    xmake f -p android --ndk=xxxxx
-    xmake
-    
-    # build for the linux cross-platform
-    cd ./tbox
-    xmake f -p linux --sdk=/home/sdk # --toolchains=/home/sdk/bin
-    xmake
+# build for the mingw platform
+$ cd ./tbox
+$ xmake f -p mingw --sdk=/home/mingwsdk 
+$ xmake
 
+# build for the iphoneos platform
+$ cd ./tbox
+$ xmake f -p iphoneos 
+$ xmake
+
+# build for the android platform
+$ cd ./tbox
+$ xmake f -p android --ndk=xxxxx
+$ xmake
+
+# build for the linux cross-platform
+$ cd ./tbox
+$ xmake f -p linux --sdk=/home/sdk # --bin=/home/sdk/bin
+$ xmake
+```
     
 ## Example
 
-    #include "tbox/tbox.h"
+```c
+#include "tbox/tbox.h"
 
-    int main(int argc, char** argv)
+int main(int argc, char** argv)
+{
+    // init tbox
+    if (!tb_init(tb_null, tb_null)) return 0;
+
+    // trace
+    tb_trace_i("hello tbox");
+
+    // init vector
+    tb_vector_ref_t vector = tb_vector_init(0, tb_element_cstr(tb_true));
+    if (vector)
     {
-        // init tbox
-        if (!tb_init(tb_null, tb_null)) return 0;
+        // insert item
+        tb_vector_insert_tail(vector, "hello");
+        tb_vector_insert_tail(vector, "tbox");
 
-        // trace
-        tb_trace_i("hello tbox");
-
-        // init vector
-        tb_vector_ref_t vector = tb_vector_init(0, tb_element_cstr(tb_true));
-        if (vector)
+        // dump all items
+        tb_for_all (tb_char_t const*, cstr, vector)
         {
-            // insert item
-            tb_vector_insert_tail(vector, "hello");
-            tb_vector_insert_tail(vector, "tbox");
-
-            // dump all items
-            tb_for_all (tb_char_t const*, cstr, vector)
-            {
-                // trace
-                tb_trace_i("%s", cstr);
-            }
-
-            // exit vector
-            tb_vector_exit(vector);
+            // trace
+            tb_trace_i("%s", cstr);
         }
 
-        // init stream
-        tb_stream_ref_t stream = tb_stream_init_from_url("http://www.xxx.com/file.txt");
-        if (stream)
-        {
-            // open stream
-            if (tb_stream_open(stream))
-            {
-                // read line
-                tb_long_t size = 0;
-                tb_char_t line[TB_STREAM_BLOCK_MAXN];
-                while ((size = tb_stream_bread_line(stream, line, sizeof(line))) >= 0)
-                {
-                    // trace
-                    tb_trace_i("line: %s", line);
-                }
-            }
-
-            // exit stream
-            tb_stream_exit(stream);
-        }
-
-        // wait some time
-        getchar();
-
-        // exit tbox
-        tb_exit();
-        return 0;
+        // exit vector
+        tb_vector_exit(vector);
     }
 
-#### Contacts
+    // init stream
+    tb_stream_ref_t stream = tb_stream_init_from_url("http://www.xxx.com/file.txt");
+    if (stream)
+    {
+        // open stream
+        if (tb_stream_open(stream))
+        {
+            // read line
+            tb_long_t size = 0;
+            tb_char_t line[TB_STREAM_BLOCK_MAXN];
+            while ((size = tb_stream_bread_line(stream, line, sizeof(line))) >= 0)
+            {
+                // trace
+                tb_trace_i("line: %s", line);
+            }
+        }
+
+        // exit stream
+        tb_stream_exit(stream);
+    }
+
+    // wait 
+    getchar();
+
+    // exit tbox
+    tb_exit();
+    return 0;
+}
+```
+
+## Contacts
 
 * Email：[waruqi@gmail.com](mailto:waruqi@gmail.com)
-* Homepage：[TBOOX Open Source Project](http://www.tboox.org/cn)
-* Community：[TBOOX Open Source Community](http://www.tboox.org/forum)
-
+* Homepage：[tboox.org](http://www.tboox.org)
+* Community：[/r/tboox on reddit](https://www.reddit.com/r/tboox/)

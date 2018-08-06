@@ -24,7 +24,7 @@ self.$config = {
         title: 'Feedback', path: 'https://github.com/tboox/tbox/issues'
       },
       {
-        title: 'Community', path: 'http://www.tboox.org/forum'
+        title: 'Community', path: 'https://www.reddit.com/r/tboox/'
       },
       {
         title: 'English', type: 'dropdown', items: langs, exact: true
@@ -44,7 +44,7 @@ self.$config = {
         title: '反馈', path: 'https://github.com/tboox/tbox/issues'
       },
       {
-        title: '社区', path: 'http://www.tboox.org/forum'
+        title: '社区', path: 'https://www.reddit.com/r/tboox/'
       },
       {
         title: '中文', type: 'dropdown', items: langs, exact: true

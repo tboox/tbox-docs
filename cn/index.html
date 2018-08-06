@@ -51,9 +51,7 @@
 
     <section class="main-content">
       
-      <h1 id="c">一个用c语言实现的跨平台开发库</h1>
-
-<h2 id="section">简介</h2>
+      <h2 id="section">简介</h2>
 
 <p>TBOX是一个用c语言实现的跨平台开发库。</p>
 
@@ -76,16 +74,17 @@
 <ul>
   <li>Release: 正式版编译，禁用调试信息、断言，各种检测机制，启用编译器优化</li>
   <li>Debug: 调试模式，默认启用详细调试信息、断言、内存越界检测、内存泄漏、锁竞争分析等检测机制</li>
-  <li>Small: 默认禁用所有扩展模块，启用编译器最小化优化</li>
+  <li>Small: 最小化编译，默认禁用所有扩展模块，启用编译器最小化优化</li>
   <li>Micro: 针对嵌入式平台，仅仅编译tbox微内核，仅提供最基础的跨平台接口，生成库仅64K左右（内置轻量libc接口实现）</li>
 </ul>
 
 <p>如果你想了解更多，请参考：</p>
 
 <ul>
-  <li><a href="https://github.com/waruqi/tbox/wiki/%E7%9B%AE%E5%BD%95">在线文档</a></li>
-  <li><a href="https://github.com/waruqi/tbox">在线源码</a></li>
   <li><a href="http://www.tboox.org/cn">项目主页</a></li>
+  <li><a href="https://github.com/tboox/tbox/wiki/%E7%9B%AE%E5%BD%95">在线文档</a></li>
+  <li><a href="https://github.com/tboox/tbox">Github</a></li>
+  <li><a href="https://gitee.com/tboox/tbox">Gitee</a></li>
 </ul>
 
 <h2 id="section-1">特性</h2>
@@ -113,6 +112,7 @@
   <li>socket、stream都模块原生支持协程，并且可在线程和协程间进行无缝切换</li>
   <li>提供http、file等基于协程的简单服务器实例，只需几百行代码，就可以从socket开始写个高性能io服务器，代码逻辑比异步回调模式更加清晰</li>
   <li>同时提供stackfull, stackless两种协程模式支持，stackless协程更加的轻量（每个协程只占用几十个bytes），切换更快（会牺牲部分易用性）</li>
+  <li>支持epoll, kqueue, poll, select 和 IOCP</li>
 </ul>
 
 <h4 id="section-4">数据库</h4>
@@ -246,133 +246,117 @@
   <li>使用pcre, pcre2和posix正则库</li>
 </ul>
 
-<h4 id="asio-">asio库 (已废弃)</h4>
-
-<ul>
-  <li>请使用协程来进行异步io编程</li>
-</ul>
-
-<h2 id="section-15">后续任务</h2>
-
-<ul>
-  <li>重构xml模块</li>
-  <li>添加更多的容器和算法</li>
-  <li>优化更多的libc接口</li>
-  <li>实现更多的libm接口，而不仅仅是包裹到系统api</li>
-</ul>
-
 <h2 id="tbox">一些使用tbox的项目：</h2>
 
 <ul>
-  <li><a href="https://github.com/waruqi/gbox">gbox</a></li>
-  <li><a href="https://github.com/waruqi/vm86">vm86</a></li>
+  <li><a href="https://github.com/tboox/gbox">gbox</a></li>
+  <li><a href="https://github.com/tboox/vm86">vm86</a></li>
   <li><a href="http://www.xmake.io/cn">xmake</a></li>
-  <li><a href="https://github.com/waruqi/itrace">itrace</a></li>
-  <li><a href="https://github.com/waruqi/tbox/wiki/%E4%BD%BF%E7%94%A8tbox%E7%9A%84%E5%BC%80%E6%BA%90%E5%BA%93">更多项目</a></li>
+  <li><a href="https://github.com/tboox/itrace">itrace</a></li>
+  <li><a href="https://github.com/tboox/tbox/wiki/%E4%BD%BF%E7%94%A8tbox%E7%9A%84%E5%BC%80%E6%BA%90%E5%BA%93">更多项目</a></li>
 </ul>
 
-<h2 id="section-16">编译</h2>
+<h2 id="section-15">编译</h2>
 
-<p>请先安装: <a href="https://github.com/waruqi/xmake">xmake</a></p>
+<p>请先安装: <a href="https://github.com/tboox/xmake">xmake</a></p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code># 默认直接编译当前主机平台
-cd ./tbox
-xmake
+<div class="language-console highlighter-rouge"><pre class="highlight"><code><span class="ni"># </span><span class="nc">默认直接编译当前主机平台</span><span class="kv">
+</span><span class="w">$ </span><span class="nc">cd</span><span class="kv"> ./tbox
+</span><span class="w">$ </span><span class="nc">xmake</span><span class="kv">
+</span>
+<span class="ni"># </span><span class="nc">编译mingw平台</span><span class="kv">
+</span><span class="w">$ </span><span class="nc">cd</span><span class="kv"> ./tbox
+</span><span class="w">$ </span><span class="nc">xmake</span><span class="kv"> f -p mingw --sdk=/home/mingwsdk 
+</span><span class="w">$ </span><span class="nc">xmake</span><span class="kv">
+</span>
+<span class="ni"># </span><span class="nc">编译iphoneos平台</span><span class="kv">
+</span><span class="w">$ </span><span class="nc">cd</span><span class="kv"> ./tbox
+</span><span class="w">$ </span><span class="nc">xmake</span><span class="kv"> f -p iphoneos 
+</span><span class="w">$ </span><span class="nc">xmake</span><span class="kv">
+</span>
+<span class="ni"># </span><span class="nc">编译android平台</span><span class="kv">
+</span><span class="w">$ </span><span class="nc">cd</span><span class="kv"> ./tbox
+</span><span class="w">$ </span><span class="nc">xmake</span><span class="kv"> f -p android --ndk=xxxxx
+</span><span class="w">$ </span><span class="nc">xmake</span><span class="kv">
+</span>
+<span class="ni"># </span><span class="nc">交叉编译</span><span class="kv">
+</span><span class="w">$ </span><span class="nc">cd</span><span class="kv"> ./tbox
+</span><span class="w">$ </span><span class="nc">xmake</span><span class="kv"> f -p linux --sdk=/home/sdk #--bin=/home/sdk/bin
+</span><span class="w">$ </span><span class="nc">xmake</span><span class="kv">
+</span></code></pre>
+</div>
 
-# 编译mingw平台
-cd ./tbox
-xmake f -p mingw --sdk=/home/mingwsdk 
-xmake
+<h2 id="section-16">例子</h2>
 
-# 编译iphoneos平台
-cd ./tbox
-xmake f -p iphoneos 
-xmake
+<div class="language-c highlighter-rouge"><pre class="highlight"><code><span class="cp">#include "tbox/tbox.h"
+</span>
+<span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span><span class="o">**</span> <span class="n">argv</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="c1">// init tbox
+</span>    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">tb_init</span><span class="p">(</span><span class="n">tb_null</span><span class="p">,</span> <span class="n">tb_null</span><span class="p">))</span> <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
 
-# 编译android平台
-cd ./tbox
-xmake f -p android --ndk=xxxxx
-xmake
+    <span class="c1">// trace
+</span>    <span class="n">tb_trace_i</span><span class="p">(</span><span class="s">"hello tbox"</span><span class="p">);</span>
 
-# 交叉编译
-cd ./tbox
-xmake f -p linux --sdk=/home/sdk #--toolchains=/home/sdk/bin
-xmake
+    <span class="c1">// init vector
+</span>    <span class="n">tb_vector_ref_t</span> <span class="n">vector</span> <span class="o">=</span> <span class="n">tb_vector_init</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">tb_element_cstr</span><span class="p">(</span><span class="n">tb_true</span><span class="p">));</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">vector</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="c1">// insert item
+</span>        <span class="n">tb_vector_insert_tail</span><span class="p">(</span><span class="n">vector</span><span class="p">,</span> <span class="s">"hello"</span><span class="p">);</span>
+        <span class="n">tb_vector_insert_tail</span><span class="p">(</span><span class="n">vector</span><span class="p">,</span> <span class="s">"tbox"</span><span class="p">);</span>
+
+        <span class="c1">// dump all items
+</span>        <span class="n">tb_for_all</span> <span class="p">(</span><span class="n">tb_char_t</span> <span class="k">const</span><span class="o">*</span><span class="p">,</span> <span class="n">cstr</span><span class="p">,</span> <span class="n">vector</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="c1">// trace
+</span>            <span class="n">tb_trace_i</span><span class="p">(</span><span class="s">"%s"</span><span class="p">,</span> <span class="n">cstr</span><span class="p">);</span>
+        <span class="p">}</span>
+
+        <span class="c1">// exit vector
+</span>        <span class="n">tb_vector_exit</span><span class="p">(</span><span class="n">vector</span><span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="c1">// init stream
+</span>    <span class="n">tb_stream_ref_t</span> <span class="n">stream</span> <span class="o">=</span> <span class="n">tb_stream_init_from_url</span><span class="p">(</span><span class="s">"http://www.xxx.com/file.txt"</span><span class="p">);</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">stream</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="c1">// open stream
+</span>        <span class="k">if</span> <span class="p">(</span><span class="n">tb_stream_open</span><span class="p">(</span><span class="n">stream</span><span class="p">))</span>
+        <span class="p">{</span>
+            <span class="c1">// read line
+</span>            <span class="n">tb_long_t</span> <span class="n">size</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+            <span class="n">tb_char_t</span> <span class="n">line</span><span class="p">[</span><span class="n">TB_STREAM_BLOCK_MAXN</span><span class="p">];</span>
+            <span class="k">while</span> <span class="p">((</span><span class="n">size</span> <span class="o">=</span> <span class="n">tb_stream_bread_line</span><span class="p">(</span><span class="n">stream</span><span class="p">,</span> <span class="n">line</span><span class="p">,</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">line</span><span class="p">)))</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">)</span>
+            <span class="p">{</span>
+                <span class="c1">// trace
+</span>                <span class="n">tb_trace_i</span><span class="p">(</span><span class="s">"line: %s"</span><span class="p">,</span> <span class="n">line</span><span class="p">);</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+
+        <span class="c1">// exit stream
+</span>        <span class="n">tb_stream_exit</span><span class="p">(</span><span class="n">stream</span><span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="c1">// wait 
+</span>    <span class="n">getchar</span><span class="p">();</span>
+
+    <span class="c1">// exit tbox
+</span>    <span class="n">tb_exit</span><span class="p">();</span>
+    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
 </code></pre>
 </div>
 
-<h2 id="section-17">例子</h2>
-
-<div class="highlighter-rouge"><pre class="highlight"><code>#include "tbox/tbox.h"
-
-int main(int argc, char** argv)
-{
-    // init tbox
-    if (!tb_init(tb_null, tb_null)) return 0;
-
-    // trace
-    tb_trace_i("hello tbox");
-
-    // init vector
-    tb_vector_ref_t vector = tb_vector_init(0, tb_element_cstr(tb_true));
-    if (vector)
-    {
-        // insert item
-        tb_vector_insert_tail(vector, "hello");
-        tb_vector_insert_tail(vector, "tbox");
-
-        // dump all items
-        tb_for_all (tb_char_t const*, cstr, vector)
-        {
-            // trace
-            tb_trace_i("%s", cstr);
-        }
-
-        // exit vector
-        tb_vector_exit(vector);
-    }
-
-    // init stream
-    tb_stream_ref_t stream = tb_stream_init_from_url("http://www.xxx.com/file.txt");
-    if (stream)
-    {
-        // open stream
-        if (tb_stream_open(stream))
-        {
-            // read line
-            tb_long_t size = 0;
-            tb_char_t line[TB_STREAM_BLOCK_MAXN];
-            while ((size = tb_stream_bread_line(stream, line, sizeof(line))) &gt;= 0)
-            {
-                // trace
-                tb_trace_i("line: %s", line);
-            }
-        }
-
-        // exit stream
-        tb_stream_exit(stream);
-    }
-
-    // wait some time
-    getchar();
-
-    // exit tbox
-    tb_exit();
-    return 0;
-}
-</code></pre>
-</div>
-
-<h4 id="section-18">联系方式</h4>
+<h2 id="section-17">联系方式</h2>
 
 <ul>
   <li>邮箱：<a href="mailto:waruqi@gmail.com">waruqi@gmail.com</a></li>
   <li>主页：<a href="http://www.tboox.org/cn">TBOOX开源工程</a></li>
-  <li>社区：<a href="http://www.tboox.org/forum">TBOOX开源社区</a></li>
+  <li>社区：<a href="https://www.reddit.com/r/tboox/">Reddit论坛</a></li>
   <li>QQ群：343118190</li>
   <li>微信公众号：tboox-os</li>
 </ul>
-
 
 
       <footer class="site-footer">
