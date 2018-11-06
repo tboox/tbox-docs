@@ -1,3 +1,3 @@
-# Manual
+# 手册
 
 [TODO]
