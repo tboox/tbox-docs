@@ -16,9 +16,11 @@ module.exports = {
     }
   },
   themeConfig: {
-    repo: 'tboox/tbox-docs',
+    repo: 'tboox/tbox',
+    docsRepo: 'tboox/tbox-docs',
     docsDir: 'src',
     editLinks: true,
+    sidebarDepth: 2,
     locales: {
       '/': {
         label: 'English',

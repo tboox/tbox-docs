@@ -38,4 +38,8 @@ int main(int argc, char** argv)
         // exit vector
         tb_vector_exit(vector);
     }
+
+    // exit tbox
+    tb_exit();
+}
 ```
