@@ -1,4 +1,5 @@
 module.exports = {
+  dest: 'docs',
   head: [
     ['link', { rel: 'shortcut icon', type: "image/x-icon", href: `/favicon.ico` }]
   ],
@@ -16,7 +17,7 @@ module.exports = {
   },
   themeConfig: {
     repo: 'tboox/tbox',
-    docsDir: 'docs',
+    docsDir: 'src',
     editLinks: true,
     locales: {
       '/': {
