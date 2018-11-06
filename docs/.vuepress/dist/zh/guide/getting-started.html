@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>快速开始 | TBOX</title>
+    <meta name="description" content="一个用c语言实现的跨平台开发库">
+    <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico">
+    
+    <link rel="preload" href="/assets/css/styles.d40278bc.css" as="style"><link rel="preload" href="/assets/js/app.d40278bc.js" as="script"><link rel="preload" href="/assets/js/8.4e83a818.js" as="script"><link rel="prefetch" href="/assets/css/1.styles.b05fc641.css"><link rel="prefetch" href="/assets/css/2.styles.a2bd3099.css"><link rel="prefetch" href="/assets/js/1.b05fc641.js"><link rel="prefetch" href="/assets/js/10.ee1072b9.js"><link rel="prefetch" href="/assets/js/2.a2bd3099.js"><link rel="prefetch" href="/assets/js/3.8e939e6b.js"><link rel="prefetch" href="/assets/js/4.d8d5d0bc.js"><link rel="prefetch" href="/assets/js/5.12ab72e9.js"><link rel="prefetch" href="/assets/js/6.321b6af6.js"><link rel="prefetch" href="/assets/js/7.b89e5211.js"><link rel="prefetch" href="/assets/js/9.88ac8570.js">
+    <link rel="stylesheet" href="/assets/css/1.styles.b05fc641.css"><link rel="stylesheet" href="/assets/css/2.styles.a2bd3099.css"><link rel="stylesheet" href="/assets/css/styles.d40278bc.css">
+  </head>
+  <body>
+    <div id="app" data-server-rendered="true"><div class="theme-container"><header class="navbar"><div class="sidebar-button"><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" viewBox="0 0 448 512" class="icon"><path fill="currentColor" d="M436 124H12c-6.627 0-12-5.373-12-12V80c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12z"></path></svg></div> <a href="/zh/" class="home-link router-link-active"><!----> <span class="site-name">TBOX</span></a> <div class="links" style="max-width:nullpx;"><div class="search-box"><input aria-label="Search" autocomplete="off" spellcheck="false" value=""> <!----></div> <nav class="nav-links can-hide"><div class="nav-item"><a href="/zh/guide/introduction.html" class="nav-link">指南</a></div><div class="nav-item"><a href="/zh/manual/index.html" class="nav-link">手册</a></div><div class="nav-item"><div class="dropdown-wrapper"><a class="dropdown-title"><span class="title">选择语言</span> <span class="arrow right"></span></a> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><!----> <a href="/guide/getting-started.html" class="nav-link">English</a></li><li class="dropdown-item"><!----> <a href="/zh/guide/getting-started.html" class="nav-link router-link-exact-active router-link-active">简体中文</a></li></ul></div></div> <a href="https://github.com/tboox/tbox" target="_blank" rel="noopener noreferrer" class="repo-link">
+    GitHub
+    <svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg></a></nav></div></header> <div class="sidebar-mask"></div> <div class="sidebar"><nav class="nav-links"><div class="nav-item"><a href="/zh/guide/introduction.html" class="nav-link">指南</a></div><div class="nav-item"><a href="/zh/manual/index.html" class="nav-link">手册</a></div><div class="nav-item"><div class="dropdown-wrapper"><a class="dropdown-title"><span class="title">选择语言</span> <span class="arrow right"></span></a> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><!----> <a href="/guide/getting-started.html" class="nav-link">English</a></li><li class="dropdown-item"><!----> <a href="/zh/guide/getting-started.html" class="nav-link router-link-exact-active router-link-active">简体中文</a></li></ul></div></div> <a href="https://github.com/tboox/tbox" target="_blank" rel="noopener noreferrer" class="repo-link">
+    GitHub
+    <svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg></a></nav>  <ul class="sidebar-links"><li><div class="sidebar-group first collapsable"><p class="sidebar-heading open"><span>指南</span> <span class="arrow down"></span></p> <ul class="sidebar-group-items"><li><a href="/zh/guide/introduction.html" class="sidebar-link">简介</a></li><li><a href="/zh/guide/getting-started.html" class="active sidebar-link">快速开始</a><ul class="sidebar-sub-headers"><li class="sidebar-sub-header"><a href="/zh/guide/getting-started.html#编译" class="sidebar-link">编译</a></li><li class="sidebar-sub-header"><a href="/zh/guide/getting-started.html#例子" class="sidebar-link">例子</a></li></ul></li></ul></div></li></ul> </div> <div class="page"> <div class="content"><h1 id="快速开始"><a href="#快速开始" aria-hidden="true" class="header-anchor">#</a> 快速开始</h1> <h2 id="编译"><a href="#编译" aria-hidden="true" class="header-anchor">#</a> 编译</h2> <p>请先安装: <a href="https://github.com/tboox/xmake" target="_blank" rel="noopener noreferrer">xmake<svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg></a></p> <div class="language-console extra-class"><pre class="language-text"><code># 默认直接编译当前主机平台
+$ cd ./tbox
+$ xmake
+
+# 编译mingw平台
+$ cd ./tbox
+$ xmake f -p mingw --sdk=/home/mingwsdk 
+$ xmake
+
+# 编译iphoneos平台
+$ cd ./tbox
+$ xmake f -p iphoneos 
+$ xmake
+
+# 编译android平台
+$ cd ./tbox
+$ xmake f -p android --ndk=xxxxx
+$ xmake
+
+# 交叉编译
+$ cd ./tbox
+$ xmake f -p linux --sdk=/home/sdk #--bin=/home/sdk/bin
+$ xmake
+</code></pre></div><h2 id="例子"><a href="#例子" aria-hidden="true" class="header-anchor">#</a> 例子</h2> <div class="language-c extra-class"><pre class="language-c"><code><span class="token macro property">#<span class="token directive keyword">include</span> <span class="token string">&quot;tbox/tbox.h&quot;</span></span>
+
+<span class="token keyword">int</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token keyword">int</span> argc<span class="token punctuation">,</span> <span class="token keyword">char</span><span class="token operator">*</span><span class="token operator">*</span> argv<span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    <span class="token comment">// init tbox</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span><span class="token function">tb_init</span><span class="token punctuation">(</span>tb_null<span class="token punctuation">,</span> tb_null<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token keyword">return</span> <span class="token number">0</span><span class="token punctuation">;</span>
+
+    <span class="token comment">// trace</span>
+    <span class="token function">tb_trace_i</span><span class="token punctuation">(</span><span class="token string">&quot;hello tbox&quot;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token comment">// init vector</span>
+    tb_vector_ref_t vector <span class="token operator">=</span> <span class="token function">tb_vector_init</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">,</span> <span class="token function">tb_element_cstr</span><span class="token punctuation">(</span>tb_true<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>vector<span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token comment">// insert item</span>
+        <span class="token function">tb_vector_insert_tail</span><span class="token punctuation">(</span>vector<span class="token punctuation">,</span> <span class="token string">&quot;hello&quot;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token function">tb_vector_insert_tail</span><span class="token punctuation">(</span>vector<span class="token punctuation">,</span> <span class="token string">&quot;tbox&quot;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        <span class="token comment">// dump all items</span>
+        tb_for_all <span class="token punctuation">(</span>tb_char_t <span class="token keyword">const</span><span class="token operator">*</span><span class="token punctuation">,</span> cstr<span class="token punctuation">,</span> vector<span class="token punctuation">)</span>
+        <span class="token punctuation">{</span>
+            <span class="token comment">// trace</span>
+            <span class="token function">tb_trace_i</span><span class="token punctuation">(</span><span class="token string">&quot;%s&quot;</span><span class="token punctuation">,</span> cstr<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+
+        <span class="token comment">// exit vector</span>
+        <span class="token function">tb_vector_exit</span><span class="token punctuation">(</span>vector<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token comment">// init stream</span>
+    tb_stream_ref_t stream <span class="token operator">=</span> <span class="token function">tb_stream_init_from_url</span><span class="token punctuation">(</span><span class="token string">&quot;http://www.xxx.com/file.txt&quot;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>stream<span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token comment">// open stream</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token function">tb_stream_open</span><span class="token punctuation">(</span>stream<span class="token punctuation">)</span><span class="token punctuation">)</span>
+        <span class="token punctuation">{</span>
+            <span class="token comment">// read line</span>
+            tb_long_t size <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+            tb_char_t line<span class="token punctuation">[</span>TB_STREAM_BLOCK_MAXN<span class="token punctuation">]</span><span class="token punctuation">;</span>
+            <span class="token keyword">while</span> <span class="token punctuation">(</span><span class="token punctuation">(</span>size <span class="token operator">=</span> <span class="token function">tb_stream_bread_line</span><span class="token punctuation">(</span>stream<span class="token punctuation">,</span> line<span class="token punctuation">,</span> <span class="token keyword">sizeof</span><span class="token punctuation">(</span>line<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token operator">&gt;=</span> <span class="token number">0</span><span class="token punctuation">)</span>
+            <span class="token punctuation">{</span>
+                <span class="token comment">// trace</span>
+                <span class="token function">tb_trace_i</span><span class="token punctuation">(</span><span class="token string">&quot;line: %s&quot;</span><span class="token punctuation">,</span> line<span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token punctuation">}</span>
+        <span class="token punctuation">}</span>
+
+        <span class="token comment">// exit stream</span>
+        <span class="token function">tb_stream_exit</span><span class="token punctuation">(</span>stream<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token comment">// wait </span>
+    <span class="token function">getchar</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token comment">// exit tbox</span>
+    <span class="token function">tb_exit</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">return</span> <span class="token number">0</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+</code></pre></div></div> <div class="page-edit"><div class="edit-link"><a href="https://github.com/tboox/tbox/edit/master/docs/zh/guide/getting-started.md" target="_blank" rel="noopener noreferrer">在 GitHub 上编辑此页</a> <svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg></div> <div class="last-updated"><span class="prefix">上次更新: </span> <span class="time">2018-11-6 15:45:26</span></div></div> <div class="page-nav"><p class="inner"><span class="prev">
+        ←
+        <a href="/zh/guide/introduction.html" class="prev">
+          简介
+        </a></span> <!----></p></div> </div> <!----></div></div>
+    <script src="/assets/js/8.4e83a818.js" defer></script><script src="/assets/js/app.d40278bc.js" defer></script>
+  </body>
+</html>
