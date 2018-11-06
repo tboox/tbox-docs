@@ -31,3 +31,5 @@ cscope.*
 gmon.out
 tags
 Doxyfile
+node_modules
+dist
