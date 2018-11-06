@@ -1,6 +1,6 @@
 module.exports = {
   head: [
-    ['link', { rel: 'icon', href: '/favicon.ico' }]
+    ['link', { rel: 'shortcut icon', type: "image/x-icon", href: `/favicon.ico` }]
   ],
   locales: {
     '/': {
