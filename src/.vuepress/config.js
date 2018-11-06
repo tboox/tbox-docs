@@ -32,7 +32,23 @@ module.exports = {
           },
           {
             text: 'Manual',
-            link: '/manual/index'
+            link: '/manual/introduction'
+          },
+          {
+            text: 'Articles',
+            link: 'http://www.tboox.org/category/#tbox'
+          },
+          {
+            text: 'Feedback',
+            link: 'https://github.com/tboox/xmake/issues'
+          },
+          {
+            text: 'Community',
+            link: 'https://www.reddit.com/r/tboox/'
+          },
+          {
+            text: 'Donation',
+            link: 'http://tboox.org/cn/donation/'
           }
         ],
         sidebar: [
@@ -41,6 +57,12 @@ module.exports = {
             children: [
               '/guide/introduction',
               '/guide/getting-started',
+            ]
+          },
+          {
+            title: 'Manual',
+            children: [
+              '/manual/introduction'
             ]
           }
         ]
@@ -57,7 +79,23 @@ module.exports = {
           },
           {
             text: '手册',
-            link: '/zh/manual/index'
+            link: '/zh/manual/introduction'
+          },
+          {
+            text: '文章',
+            link: 'http://www.tboox.org/cn/category/#tbox'
+          },
+          {
+            text: '反馈',
+            link: 'https://github.com/tboox/xmake/issues'
+          },
+          {
+            text: '社区',
+            link: 'https://www.reddit.com/r/tboox/'
+          },
+          {
+            text: '捐助',
+            link: 'http://tboox.org/cn/donation/'
           }
         ],
         sidebar: [
@@ -66,6 +104,12 @@ module.exports = {
             children: [
               '/zh/guide/introduction',
               '/zh/guide/getting-started',
+            ]
+          },
+          {
+            title: '手册',
+            children: [
+              '/zh/manual/introduction'
             ]
           }
         ]
