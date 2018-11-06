@@ -16,7 +16,7 @@ module.exports = {
     }
   },
   themeConfig: {
-    repo: 'tboox/tbox',
+    repo: 'tboox/tbox-docs',
     docsDir: 'src',
     editLinks: true,
     locales: {
