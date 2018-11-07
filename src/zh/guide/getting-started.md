@@ -4,7 +4,7 @@
 
 请先安装: [xmake](https://github.com/tboox/xmake)
 
-```console
+```bash
 # 默认直接编译当前主机平台
 $ cd ./tbox
 $ xmake

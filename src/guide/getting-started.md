@@ -2,7 +2,7 @@
 
 Please install xmake first: [xmake](https://github.com/tboox/xmake)
 
-```console
+```bash
 # build for the host platform
 $ cd ./tbox
 $ xmake
