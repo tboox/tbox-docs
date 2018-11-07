@@ -42,7 +42,7 @@ module.exports = {
           },
           {
             text: 'Feedback',
-            link: 'https://github.com/tboox/xmake/issues'
+            link: 'https://github.com/tboox/tbox/issues'
           },
           {
             text: 'Community',
@@ -83,7 +83,7 @@ module.exports = {
           },
           {
             text: '反馈',
-            link: 'https://github.com/tboox/xmake/issues'
+            link: 'https://github.com/tboox/tbox/issues'
           },
           {
             text: '社区',

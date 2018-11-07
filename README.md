@@ -27,5 +27,5 @@ If you want to known more, please refer to:
 
 * Email：[waruqi@gmail.com](mailto:waruqi@gmail.com)
 * Homepage：[TBOOX Open Source Project](http://www.tboox.org)
-* Community：[TBOOX Open Source Community](http://www.tboox.org/forum)
+* Community：[TBOOX Open Source Community](https://www.reddit.com/r/tboox/)
 
