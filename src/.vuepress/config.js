@@ -33,8 +33,8 @@ module.exports = {
             link: '/guide/introduction'
           },
           {
-            text: 'Manual',
-            link: '/manual/introduction'
+            text: 'API',
+            link: '/api/introduction'
           },
           {
             text: 'Articles',
@@ -53,21 +53,15 @@ module.exports = {
             link: 'http://tboox.org/cn/donation/'
           }
         ],
-        sidebar: [
-          {
-            title: 'Guide',
-            children: [
-              '/guide/introduction',
-              '/guide/getting-started',
-            ]
-          },
-          {
-            title: 'Manual',
-            children: [
-              '/manual/introduction'
-            ]
-          }
-        ]
+        sidebar: {
+          '/guide/': [
+            'introduction',
+            'getting-started',
+          ],
+          '/api/': [
+            'introduction'
+          ]
+        }
       },
       '/zh/': {
         label: '简体中文',
@@ -80,8 +74,8 @@ module.exports = {
             link: '/zh/guide/introduction'
           },
           {
-            text: '手册',
-            link: '/zh/manual/introduction'
+            text: '接口',
+            link: '/zh/api/introduction'
           },
           {
             text: '文章',
@@ -100,21 +94,15 @@ module.exports = {
             link: 'http://tboox.org/cn/donation/'
           }
         ],
-        sidebar: [
-          {
-            title: '指南',
-            children: [
-              '/zh/guide/introduction',
-              '/zh/guide/getting-started',
-            ]
-          },
-          {
-            title: '手册',
-            children: [
-              '/zh/manual/introduction'
-            ]
-          }
-        ]
+        sidebar: {
+          '/zh/guide/': [
+            'introduction',
+            'getting-started',
+          ],
+          '/zh/api/': [
+            'introduction'
+          ]
+        }
       }
     }
   }
