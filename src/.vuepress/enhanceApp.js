@@ -29,8 +29,8 @@ function integrateGitalk(router) {
   }
   function renderGitalk(fullPath) {
     const gitalk = new Gitalk({
-      clientID: 'cb53dd42b1b654202a55',
-      clientSecret: '8a9a0e7feadc575b8bba9770cd9454d7423028ac',
+      clientID: '3ebed7fd0834268f0add',
+      clientSecret: 'b68e2ebf0bd9358eccaf3159f3a4cebb66e3b398',
       repo: 'tbox-docs',
       owner: 'waruqi',
       admin: ['waruqi'],
