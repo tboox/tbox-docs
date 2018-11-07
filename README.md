@@ -6,6 +6,18 @@
 
 tbox-docs is an official tbox documents site (https://tboox.io). 
 
+## Development
+
+```console
+$ yarn docs:dev
+```
+
+## Build static pages
+
+```console
+$ yarn docs:build
+```
+
 If you want to known more, please refer to:
 
 * [Github](https://github.com/tboox/tbox)
