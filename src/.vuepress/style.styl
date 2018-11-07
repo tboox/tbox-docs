@@ -1,9 +1,8 @@
 /* code text color 
  */
-.content
-  pre, pre[class*="language-"]
-    code
-      color #555555
+.content pre[class*=language-] code, .content pre code {
+    color: #555555 !important;
+}
 
 /* https://github.com/leptosia/docute/blob/master/src/css/prism.css
  */
@@ -12,11 +11,11 @@
 .token.prolog,
 .token.doctype,
 .token.cdata {
-	color: #7D8B99;
+	color: #7D8B99 !important;
 }
 
 .token.punctuation {
-	color: #5F6364;
+	color: #5F6364 !important;
 }
 
 .token.property,
@@ -27,7 +26,7 @@
 .token.constant,
 .token.symbol,
 .token.deleted {
-	color: #c92c2c;
+	color: #c92c2c !important;
 }
 
 .token.selector,
@@ -37,14 +36,14 @@
 .token.function,
 .token.builtin,
 .token.inserted {
-	color: #2f9c0a;
+	color: #2f9c0a !important;
 }
 
 .token.operator,
 .token.entity,
 .token.url,
 .token.variable {
-	color: #a67f59;
+	color: #a67f59 !important;
 	background: transparent;
 }
 
@@ -52,7 +51,7 @@
 .token.attr-value,
 .token.keyword,
 .token.class-name {
-	color: #1990b8;
+	color: #1990b8 !important;
 }
 
 .token.regex,
@@ -62,7 +61,7 @@
 
 .language-css .token.string,
 .style .token.string {
-	color: #a67f59;
+	color: #a67f59 !important;
 	background: rgba(255, 255, 255, 0.5);
 }
 
