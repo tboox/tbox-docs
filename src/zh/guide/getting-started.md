@@ -2,7 +2,7 @@
 
 ## 编译 
 
-请先安装: [xmake](https://github.com/tboox/xmake)
+请先安装: [xmake](https://github.com/xmake-io/xmake)
 
 ```bash
 # 默认直接编译当前主机平台

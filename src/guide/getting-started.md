@@ -1,6 +1,6 @@
 # Getting Started
 
-Please install xmake first: [xmake](https://github.com/tboox/xmake)
+Please install xmake first: [xmake](https://github.com/xmake-io/xmake)
 
 ```bash
 # build for the host platform
