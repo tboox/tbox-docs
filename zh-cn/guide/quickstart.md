@@ -121,3 +121,102 @@ $ xmake run -d
 
 由于默认编译式release模式，不带调试符号信息，因此如果要调试程序，可以先启用debug模式编译后，再调试运行即可。
 
+## 生成IDE工程文件
+
+### 生成vs工程
+
+我们也可以通过生成vs工程来更方便的开发和调试，下面的命令同时生成带有debug, release两个编译模式的vc工程。
+
+```bash
+xmake project -k vs2017 -m "debug,release"
+```
+
+### 生成cmake文件
+
+```bash
+xmake project -k cmakelists
+```
+
+### 生成makefile
+
+```bash
+xmake project -k makefile
+```
+
+## 源码编译
+
+除了通过创建空工程，在xmake.lua中使用`add_requires("tbox")`快速集成tbox，我们也可以通过现在tbox源码手动编译集成。
+
+首先，我们需要下载tbox的源码：
+
+```bash
+git clone https://github.com/tboox/tbox.git
+```
+
+然后进入工程根目录，执行xmake编译：
+
+```bash
+cd tbox
+xmake
+```
+
+编译完，我们可以通过安装或者打包的方式，获取对应的库文件和头文件
+
+### 安装库
+
+通过安装，可以将编译好的库和头文件安装到系统目录或者指定目录
+
+```bash
+xmake install 
+xmake install -o /xxx/installdir
+```
+
+### 打包库
+
+上面安装的方式，只能安装一个平台下对应arch的库，如果要同时切换平台和架构，编译生成一系列库版本，这种方式就很繁琐了，因此可以通过打包命令来完成。
+
+```bash
+xmake f -p iphoneos -a armv7
+xmake
+xmake package
+xmake f -p iphoneos -a arm64 -m debug
+xmake
+xmake package
+```
+
+上述命令，编译了iphoneos下，两个arch库，并且其中arm64库是debug版本的，进行打包，生成后的结果如下：
+
+```
+build/tbox.pkg/
+├── iphoneos
+│   ├── arm64
+│   │   ├── include
+│   │   │   └── tbox
+│   │   │       ├── algorithm
+│   │   └── lib
+│   │       └── debug
+│   │           └── libtbox.a
+│   └── armv7
+│       ├── include
+│       │   └── tbox
+│       └── lib
+│           └── release
+│               └── libtbox.a
+└── xmake.lua
+```
+
+可以看出，打包命令，会在build目录下生成tbox.pkg包，里面对不同平台、不同arch、不同编译模式以及头文件都做了归类整理，这对于一次输出不同的库是非常有帮助的。
+
+并且，xmake还提供了一个辅助的宏命令，可以锦衣简化打包流程，实现对一个平台下的所有arch，进行批量打包，尤其是iphoneos下，还会同时生成universal包：
+
+```bash
+xmake macro package -p iphoneos
+```
+
+如果想要切到debug模式，一次生成所有arch的包，可以传递配置进去：
+
+```bash
+xmake macro package -p iphoneos -f "-m debug"
+```
+
+### 集成库
