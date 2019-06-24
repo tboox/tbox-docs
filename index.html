@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>TBOX</title>
+  <link rel="icon" href="assets/img/favicon.ico">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+  <meta name="description" content="Description">
+  <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/docsify-themeable@0/dist/css/theme-simple.css">
+  <link rel="stylesheet" href="//unpkg.com/gitalk/dist/gitalk.css">
+  <style>
+    nav.app-nav li ul {
+      min-width: 100px;
+    }
+  </style>
+</head>
+<body>
+  <div id="app">Loading ...</div>
+  <script>
+    window.$docsify = {
+      name: 'TBOX',
+      repo: 'https://github.com/tboox/tbox',
+      auto2top: true,
+      executeScript: true,
+      loadSidebar: true,
+      loadNavbar: true,
+      mergeNavbar: true,
+      mergeNavbar: true,
+      notFoundPage: true,
+      maxLevel: 6,
+      subMaxLevel: 4,
+      onlyCover: true,
+      coverpage: ['/', '/zh-cn/'],
+      markdown: {
+        renderer: {
+          	image: function(href, title) {
+            	return `<img src="${href}"/>`
+          	}
+        }
+      },
+      alias: {
+        <!-- multi-languages -->
+        '/zh-cn/(.*)': '/zh-cn/$1',
+        <!-- others -->
+        '/sponsor': '/about/sponsor'
+      },
+      search: {
+        maxAge: 86400000, 
+        paths: 'auto',
+        placeholder: {
+          '/zh-cn/': '搜索',
+          '/': 'Type to search'
+        },
+        noData: {
+          '/zh-cn/': '找不到结果',
+          '/': 'No Results'
+        },
+        depth: 6,
+        hideOtherSidebarContent: false 
+      },
+      formatUpdated: '{MM}/{DD} {HH}:{mm}',
+      plugins: [
+        function (hook, vm) {
+          hook.beforeEach(function (html) {
+            if (/githubusercontent\.com/.test(vm.route.file)) {
+              url = vm.route.file
+                .replace('raw.githubusercontent.com', 'github.com')
+                .replace(/\/master/, '/blob/master')
+            } else {
+              url = 'https://github.com/tboox/tbox-docs/blob/master/' + vm.route.file
+            }
+            var editHtml = '[:memo: Edit Document](' + url + ')\n'
+            return editHtml
+              + html
+              + '\n\n----\n\n'
+              + '<a href="https://tboox.io" target="_blank" style="color: inherit; font-weight: normal; text-decoration: none;">Copyright (c) 2015-present tboox.io & tboox.org</a>'
+          })
+        }
+      ]
+    }
+  </script>
+  <script src="//unpkg.com/docsify/lib/docsify.min.js"></script>
+  <script src="//unpkg.com/docsify/lib/plugins/search.min.js"></script>
+  <script src="//unpkg.com/prismjs/components/prism-c.min.js"></script>
+  <script src="//unpkg.com/prismjs/components/prism-lua.min.js"></script>
+  <script src="//unpkg.com/prismjs/components/prism-bash.min.js"></script>
+  <script src="//unpkg.com/docsify-copy-code"></script>
+  <!-- gitalk -->
+  <script src="//unpkg.com/docsify/lib/plugins/gitalk.min.js"></script>
+  <script src="//unpkg.com/gitalk/dist/gitalk.min.js"></script>
+  <script>
+    const gitalk = new Gitalk({
+      clientID: 'cb53dd42b1b654202a55',
+      clientSecret: '8a9a0e7feadc575b8bba9770cd9454d7423028ac',
+      repo: 'tbox-docs',
+      owner: 'waruqi',
+      admin: ['waruqi'],
+      id: location.pathname,      
+      distractionFreeMode: false  
+    })
+  </script>
+  <!-- gitter -->
+  <script>
+  ((window.gitter = {}).chat = {}).options = {
+    room: 'tboox/tboox'
+  };
+  </script>
+  <script src="https://sidecar.gitter.im/dist/sidecar.v1.js" async defer></script>
+  <!-- baidu stats -->
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?22ca20e9ec445f0932c3f66df3a016e2";
+      var s = document.getElementsByTagName("script")[0]; 
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+  <!-- pwa -->
+  <script>
+    if (typeof navigator.serviceWorker !== 'undefined') {
+      navigator.serviceWorker.register('sw.js')
+    }
+  </script>
+</body>
+</html>
