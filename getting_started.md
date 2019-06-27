@@ -39,7 +39,7 @@
   <p>A glib-like cross-platform C library</p>
 </div>
 
-## Introduction ([中文](/README_zh.md))
+## Introduction ([中文](/zh-cn/getting_started))
 
 TBOX is a glib-like cross-platform C library that is simple to use yet powerful in nature.
 
