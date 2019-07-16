@@ -1,4 +1,4 @@
-## Printout
+## Print
 
 ### Printing info information
 
