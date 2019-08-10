@@ -4,7 +4,7 @@
 
 - 简单，快速，跨平台
 
-[GitHub](https://github.com/tboox/tbox/)
-[Gitee](https://gitee.com/tboox/tbox/)
 [快速开始](/zh-cn/getting_started)
+[Gitee](https://gitee.com/tboox/tbox/)
+[Github](https://github.com/tboox/tbox/)
 
