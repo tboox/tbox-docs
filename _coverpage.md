@@ -4,5 +4,6 @@
 
 - Simple, Fast, Cross-platform 
 
+[Gitee](https://gitee.com/tboox/tbox/)
 [Github](https://github.com/tboox/tbox/)
 [Getting Started](/getting_started)
