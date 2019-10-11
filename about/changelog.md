@@ -1,4 +1,24 @@
 
+## v1.6.4
+
+### New features
+
+* [#70](https://github.com/tboox/tbox/issues/70): Add `tb_stream_init_from_sock_ref()` to open a given socket as stream
+* Add stdfile api to read/write stdin, stdout and stderr.
+* [#81](https://github.com/tboox/tbox/issues/81): Add set/get thread/process cpu affinity 
+* Add filelock api
+* Add anonymous and named pipe
+
+### Changes
+
+* Optimize queue_buffer module
+* Improve stream interfaces
+* Improve charset encoding and add ANSI support
+* Improve atomic and add c11-like atomic apis
+* Improve spinlock
+* Support to redirect process output to pipe 
+* Uses virtual memory for coroutine stack
+* Improve openssl/mbedtls for https
 
 ## v1.6.3
 

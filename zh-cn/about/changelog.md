@@ -1,4 +1,25 @@
 
+## v1.6.4
+
+### 新特性
+
+* [#70](https://github.com/tboox/tbox/issues/70): 添加`tb_stream_init_from_sock_ref()`接口去直接打开一个socket作为stream去读取数据。
+* 添加stdfile接口去读写stdin, stdout和stderr。
+* [#81](https://github.com/tboox/tbox/issues/81): 添加对进程和线程的cpu亲缘性设置和获取
+* 添加filelock文件锁跨平台api接口
+* 添加匿名管道，命名管道支持
+
+### 改进
+
+* 优化queue_buffer模块
+* 改进stream接口实现
+* 改进字符集编码转换，以及增加对ANSI编码的支持
+* 改进原子操作，并增加c11风格原子接口
+* 改进spinlock实现
+* 新增进程输出重定向到管道
+* 针对协程栈使用虚拟内存
+* 改进基于openssl/mbedtls的https访问
+
 ## v1.6.3
 
 ### 新特性
