@@ -80,7 +80,7 @@ stream是tbox的最常用的流，一般用于单路io操作，既可以进行�
 
 ```c
     // 初始化http流
-    tb_stream_ref_t stream = tb_stream_init_from_url("http://www.baidu.com");
+    tb_stream_ref_t stream = tb_stream_init_from_url("https://tboox.org");
     if (stream)
     {
         // 阻塞打开流，如果想在其他线程中断它，可以调用tb_stream_kill来实现
