@@ -53,7 +53,7 @@ Output submodule tag
 #include "tbox.h"
 
 tb_trace_i("hello world");
-````
+```
 
 Display: `[tbox]: [module]: hello world`
 

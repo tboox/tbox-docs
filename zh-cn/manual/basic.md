@@ -53,7 +53,7 @@ tb_trace_noimpl();
 #include "tbox.h"
 
 tb_trace_i("hello world");
-````
+```
 
 显示：`[tbox]: [module]: hello world`
 
