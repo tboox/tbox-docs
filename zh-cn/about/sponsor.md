@@ -15,7 +15,13 @@ tbox项目属于个人开源项目，它的发展需要您的帮助，如果您�
 
 [![Paypal Me](/assets/img/paypal.png)](https://paypal.me/tboox/5)
 
+## Bitcoin
+
+[17HDrR4boKQp5b1qxJrErrd2miiWVykx6X](https://www.blockchain.com/btc/payment_request?address=17HDrR4boKQp5b1qxJrErrd2miiWVykx6X)
+
 ## 支持者
+
+<a href="https://opencollective.com/tbox#backers" target="_blank"><img src="https://opencollective.com/tbox/backers.svg?width=890"></a>
 
 | 日期       | 支持者                                | 渠道   | 金额   | 评价                       |
 |--          | --                                    | --     | --     | --                         |
@@ -35,3 +41,19 @@ tbox项目属于个人开源项目，它的发展需要您的帮助，如果您�
 | 2016.08.05 | [蔡克伦](https://github.com/caikelun) | wechat | ¥1     |                            |
 | 2016.01.29 | Evgeny Kulikov                        | paypal | $2     |                            |
 | 2016.01.29 | 建忠                                  | alipay | ¥20.16 |                            |
+
+## 赞助者
+
+通过赞助支持此项目，您的logo和网站链接将显示在这里。[[赞助此项目](https://opencollective.com/tbox#sponsor)]
+
+<a href="https://opencollective.com/tbox/sponsor/0/website" target="_blank"><img src="https://opencollective.com/tbox/sponsor/0/avatar.svg"></a>
+<a href="https://opencollective.com/tbox/sponsor/1/website" target="_blank"><img src="https://opencollective.com/tbox/sponsor/1/avatar.svg"></a>
+<a href="https://opencollective.com/tbox/sponsor/2/website" target="_blank"><img src="https://opencollective.com/tbox/sponsor/2/avatar.svg"></a>
+<a href="https://opencollective.com/tbox/sponsor/3/website" target="_blank"><img src="https://opencollective.com/tbox/sponsor/3/avatar.svg"></a>
+<a href="https://opencollective.com/tbox/sponsor/4/website" target="_blank"><img src="https://opencollective.com/tbox/sponsor/4/avatar.svg"></a>
+<a href="https://opencollective.com/tbox/sponsor/5/website" target="_blank"><img src="https://opencollective.com/tbox/sponsor/5/avatar.svg"></a>
+<a href="https://opencollective.com/tbox/sponsor/6/website" target="_blank"><img src="https://opencollective.com/tbox/sponsor/6/avatar.svg"></a>
+<a href="https://opencollective.com/tbox/sponsor/7/website" target="_blank"><img src="https://opencollective.com/tbox/sponsor/7/avatar.svg"></a>
+<a href="https://opencollective.com/tbox/sponsor/8/website" target="_blank"><img src="https://opencollective.com/tbox/sponsor/8/avatar.svg"></a>
+<a href="https://opencollective.com/tbox/sponsor/9/website" target="_blank"><img src="https://opencollective.com/tbox/sponsor/9/avatar.svg"></a>
+
