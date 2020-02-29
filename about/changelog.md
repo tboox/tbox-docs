@@ -1,4 +1,16 @@
 
+## v1.6.5
+
+### New features
+
+* [#112](https://github.com/tboox/tbox/issues/112): Support unix socket，thanks [@Codehz](https://github.com/codehz)
+* Support to wait pipe, socket and process in coroutine and poller at same time
+
+### Changes
+
+* improve uuid and improve uuid v4
+* support msys/mingw and cygwin/gcc toolchains
+
 ## v1.6.4
 
 ### New features

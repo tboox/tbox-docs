@@ -1,4 +1,16 @@
 
+## v1.6.5
+
+### 新特性
+
+* [#112](https://github.com/tboox/tbox/issues/112): 新增unix socket支持，感谢[@Codehz](https://github.com/codehz)的贡献
+* 在协程和poller中支持同时等待和调度socket，pipe io和process
+
+### 改进
+
+* 改进uuid生成，实现uuid v4
+* 支持msys/mingw和cygwin/gcc上编译
+
 ## v1.6.4
 
 ### 新特性
