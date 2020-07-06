@@ -7,6 +7,10 @@ If you would like to support the development of tbox, welcome to donate to us.
 
 [![Paypal Me](/assets/img/paypal.png)](https://paypal.me/tboox/5)
 
+## Github Sponsor
+
+<iframe src="https://github.com/sponsors/waruqi/card" title="Sponsor waruqi" height="130" width="600" style="border: 0;"></iframe>
+
 ## Bitcoin
 
 ```
