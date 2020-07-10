@@ -1,4 +1,3 @@
 User-Agent: *
-Disallow: /build.lua
 Allow: /
 Sitemap: https://tboox.io/sitemap.xml
