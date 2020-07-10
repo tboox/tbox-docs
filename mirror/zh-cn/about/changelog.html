@@ -1,0 +1,244 @@
+<h2>Note: this is the mirror page, if you want to see the original page, please goto: </h2>
+<a href="https://tboox.io/#/zh-cn/about/changelog">https://tboox.io/#/zh-cn/about/changelog</a>
+</br><h2 id="v1-6-5">v1.6.5</h2>
+<h3 id="-">新特性</h3>
+<ul>
+<li><a href="https://github.com/tboox/tbox/issues/112">#112</a>: 新增unix socket支持，感谢<a href="https://github.com/codehz">@Codehz</a>的贡献</li>
+<li>在协程和poller中支持同时等待和调度socket，pipe io和process</li>
+</ul>
+<h3 id="-">改进</h3>
+<ul>
+<li>改进uuid生成，实现uuid v4</li>
+<li>支持msys/mingw和cygwin/gcc上编译</li>
+</ul>
+<h2 id="v1-6-4">v1.6.4</h2>
+<h3 id="-">新特性</h3>
+<ul>
+<li><a href="https://github.com/tboox/tbox/issues/70">#70</a>: 添加<code>tb_stream_init_from_sock_ref()</code>接口去直接打开一个socket作为stream去读取数据。</li>
+<li>添加stdfile接口去读写stdin, stdout和stderr。</li>
+<li><a href="https://github.com/tboox/tbox/issues/81">#81</a>: 添加对进程和线程的cpu亲缘性设置和获取</li>
+<li>添加filelock文件锁跨平台api接口</li>
+<li>添加匿名管道，命名管道支持</li>
+</ul>
+<h3 id="-">改进</h3>
+<ul>
+<li>优化queue_buffer模块</li>
+<li>改进stream接口实现</li>
+<li>改进字符集编码转换，以及增加对ANSI编码的支持</li>
+<li>改进原子操作，并增加c11风格原子接口</li>
+<li>改进spinlock实现</li>
+<li>新增进程输出重定向到管道</li>
+<li>针对协程栈使用虚拟内存</li>
+<li>改进基于openssl/mbedtls的https访问</li>
+</ul>
+<h2 id="v1-6-3">v1.6.3</h2>
+<h3 id="-">新特性</h3>
+<ul>
+<li><a href="https://github.com/tboox/tbox/issues/24">#24</a>: 针对windows平台下的协程处理，增加IOCP支持</li>
+</ul>
+<h3 id="-">改进</h3>
+<ul>
+<li>移除docs目录，放置到独立tbox-docs仓库，减少tbox.zip包大小</li>
+<li>支持tinyc编译器</li>
+<li>移除被废弃的模块（asio模块，先用coroutine代替）</li>
+<li>精简优化容器库内存资源使用</li>
+<li>帮助valgrind更好的理解coroutine</li>
+</ul>
+<h3 id="bugs-">Bugs修复</h3>
+<ul>
+<li>修复windows环境变量的中文编码问题</li>
+<li>修复后台进程退出问题</li>
+<li>修复设置环境变量值为空时的崩溃问题</li>
+<li>修复协程sleep超时覆写数据的bug</li>
+<li>修复windows根路径问题</li>
+<li>修复tls线程存储内存泄露问题</li>
+<li>修复context切换问题</li>
+<li>修复<code>tb_vsnprintf</code>栈溢出问题</li>
+<li><a href="https://github.com/tboox/tbox/issues/43">#43</a>: 修复读取dns服务器以及stream读取bug</li>
+</ul>
+<h2 id="v1-6-2">v1.6.2</h2>
+<h3 id="-">新特性</h3>
+<ul>
+<li>增加ping测试程序</li>
+</ul>
+<h3 id="-">改进</h3>
+<ul>
+<li>修改license，使用更加宽松的Apache License 2.0</li>
+<li>重命名<code>--smallest=y|n</code>选项到<code>--small=y|n</code></li>
+<li>使用<code>stat64</code>支持大文件信息获取</li>
+<li>改进<code>tb_file_copy</code>，更加快速的文件copy，并且修复copy后文件权限丢失问题</li>
+<li>改进posix平台下的路径操作</li>
+<li>改进socket初始化接口，支持icmp协议</li>
+</ul>
+<h3 id="bugs-">Bugs修复</h3>
+<ul>
+<li>修复创建文件权限不对问题</li>
+<li>修复文件和目录路径问题</li>
+<li>修复无法移除带有无效软链的目录问题</li>
+<li>修复无法移除只读文件问题</li>
+<li><a href="https://github.com/tboox/tbox/issues/34">#34</a>: 修复缓存时间和协程sleep不准问题</li>
+<li><a href="https://github.com/tboox/tbox/issues/35">#35</a>: 修复epoll边缘触发模式下，centos上检测连接关闭失效问题</li>
+</ul>
+<h2 id="v1-6-1">v1.6.1</h2>
+<h3 id="-">新特性</h3>
+<ul>
+<li>针对协程上下文切换，支持mips架构</li>
+<li>添加<code>__tb_thread_local__</code>关键字宏</li>
+<li>添加 <code>--micro=y|n</code> 选项，实现极小编译，针对嵌入式平台，编译tbox微内核(~64K) </li>
+<li>添加 <code>tb_addrinfo_addr</code> and <code>tb_addrinfo_name</code> 接口</li>
+<li>添加stackless协程，更加轻量的协程支持，每个协程只占用几十个bytes，同时支持io调度</li>
+<li>针对stackless协程，增加lock和semaphone支持</li>
+</ul>
+<h3 id="-">改进</h3>
+<ul>
+<li>为协程优化io调度器，缓存poller轮询等待，减少频繁重复调用epoll_ctl, kevent等系统接口</li>
+<li>添加对c11关键字<code>_Static_assert</code>的支持</li>
+<li>针对hash和platform模块，移除一些废弃的接口</li>
+</ul>
+<h2 id="v1-6-0">v1.6.0</h2>
+<h3 id="-">新特性</h3>
+<ul>
+<li>支持make进行直接编译（会去自动下载xmake进行构建）</li>
+<li>在平台库中，添加切换context上下文接口（参考boost.context实现原理进行重写，并对部分架构进行优化）</li>
+<li>新增跨平台协程模块（支持i386, x86_64, arm, arm64, mips），提供更加易用的高性能并发编程模式</li>
+<li>新增基于协程的各种服务器开发实例（包括：简单轻量的http服务器，爬虫。。）</li>
+<li>新增poller轮询器接口，实现对epoll, poll, kqueue, select的封装，逐步取代老的aiop接口</li>
+<li>新增mbedtls ssl库接口支持，目前已支持：openssl, polarssl, mbedtls</li>
+<li>tbox所有stream, socket, http, dns, ssl 等io相关操作，原生支持协程模式，并且可以在线程和协程间随意切换</li>
+<li>为协程提供lock, semaphone, channel模块</li>
+</ul>
+<h3 id="-">改进</h3>
+<ul>
+<li>优化和重构线程局部存储TLS模块</li>
+<li>修改部分线程接口</li>
+<li>asio模块被标记为废弃接口，下个版本将会被移除，逐步使用协程模式来实现异步io开发</li>
+<li>优化异常捕获接口</li>
+</ul>
+<h3 id="bugs-">Bugs修复</h3>
+<ul>
+<li>修复一些编译警告和错误</li>
+<li>修复一些线相关bug</li>
+<li>修复bplist中解析uid类型失败问题</li>
+</ul>
+<h2 id="v1-5-3">v1.5.3</h2>
+<h3 id="-">新特性</h3>
+<ul>
+<li>增加同时等待多个进程接口</li>
+<li>增加uuid生成器</li>
+<li>增加hash库模块</li>
+<li>添加<code>__tb_deprecated__</code>关键字以及配置选项</li>
+</ul>
+<h3 id="-">改进</h3>
+<ul>
+<li>移动部分utils接口到hash模块</li>
+<li>重写random生成器</li>
+</ul>
+<h3 id="bugs-">Bugs修复</h3>
+<ul>
+<li>修复stdout在vs2015以上版本的兼容性问题</li>
+<li>修复进程参数长度限制</li>
+</ul>
+<h2 id="v1-5-2">v1.5.2</h2>
+<h3 id="-">新特性</h3>
+<ul>
+<li>增加smallest参数配置选项，实现一键配置最小化编译，禁用所有扩展模块和依赖库</li>
+<li>增加进程创建和控制接口</li>
+</ul>
+<h3 id="-">改进</h3>
+<ul>
+<li>增强环境变量设置接口</li>
+<li>修改xmake.lua支持最新版xmake v2.x, 简化编译配置</li>
+</ul>
+<h3 id="bugs-">Bugs修复</h3>
+<ul>
+<li>修复ltimer定时器不准问题</li>
+<li>修复asio部分内存泄露问题</li>
+<li>修复asio/httpd在linux下keepalive模式，响应很慢问题</li>
+<li>修复windows下路径处理的一些bug</li>
+</ul>
+<h2 id="v1-5-1">v1.5.1</h2>
+<h3 id="-">新特性</h3>
+<ul>
+<li>自动检测所有系统libc接口，优先使用系统版本</li>
+<li>支持自定义内存分配器，并且能够在debug模式下，获取每次分配的代码位置信息，用于自定义追踪</li>
+<li>增加轻量级<code>static_pool</code>来维护整块buffer的内存分配，适合局部管理部分内存，pool虽然也能维护，但是底层基于<code>large_pool</code>，比较重量级，适合全局管理内存</li>
+<li>增加stream快速读取全部数据到string的接口</li>
+<li>增加adler32 hash算法</li>
+<li>增加<code>tb_memmem</code>接口</li>
+<li>采用pcre/pcre2/posix regex实现正则表达式库</li>
+</ul>
+<h3 id="-">改进</h3>
+<ul>
+<li>优化stream，支持对字符设备文件的读写</li>
+<li>修改<code>tb_init</code>接口，增加allocator自定义内存分配器参数，实现用户的侵入式内存管理</li>
+<li>重构内存管理，完全采用分配器allocator模式，可以灵活切换内存管理，支持原生系统内存、静态buffer内存、内存池等各种分配方式</li>
+<li>重定义assert，debug模式遇到assert直接abort执行</li>
+</ul>
+<h3 id="bugs-">Bugs修复</h3>
+<ul>
+<li>修复android下的一些bug</li>
+<li>修复stream的seek问题</li>
+</ul>
+<h2 id="v1-5-0">v1.5.0</h2>
+<h3 id="-">新特性</h3>
+<ul>
+<li>增加跨平台环境变量操作接口</li>
+</ul>
+<h3 id="-">改进</h3>
+<ul>
+<li>重建整个编译架构，采用xmake跨平台自动构建工具进行构建。。</li>
+<li>优化.pkg的依赖包机制，支持依赖库和接口的自动检测，针对libc、libm优先使用自动检测到的系统库接口实现，如果当前平台没有实现则使用tbox的自己实现版本，使得最大化性能和跨平台性。。</li>
+<li>完善和优化路径操作，增加相对路径、绝对路径的相互转换</li>
+</ul>
+<h3 id="bugs-">Bugs修复</h3>
+<ul>
+<li>修复strlcpy等一些libc接口的实现bug</li>
+</ul>
+<h2 id="v1-4-8">v1.4.8</h2>
+<h3 id="-">新特性</h3>
+<ul>
+<li>新增路径操作接口，支持相对路径、绝对路径相互转换</li>
+</ul>
+<h3 id="-">改进</h3>
+<ul>
+<li>重建整个makefile架构，采用<code>*.pkg</code>依赖包模式模块化对第三方库的依赖，降低耦合</li>
+<li>默认编译配置可以自动探测当前平台支持的依赖包，注：所有依赖包都是可选的，如果要最小化编译，可以完全禁用</li>
+<li>编译生成的所有库和头文件，也都安装成独立<code>*.pkg</code>格式，方便集成到其他开发平台，也方便copy</li>
+<li>增强object路径解析接口，支持json, xml宏路径解析，并增加实用json解析工具：jcat</li>
+<li>实现通用ipaddr结构，统一接口，全面支持ipv6/ipv4，stream/http的url也完全支持ipv6格式解析</li>
+<li>重命名hash为<code>hash_map</code>，并新增<code>hash_set</code>容器</li>
+</ul>
+<h2 id="v1-4-7">v1.4.7</h2>
+<h3 id="-">改进</h3>
+<ul>
+<li>增强fixed16定点类型的接口，优化部分接口性能，调试模式下增加更多的溢出检测</li>
+<li>优化整数平方根的实现，增加对64位整数平方根的快速计算</li>
+</ul>
+<h3 id="bugs-">Bugs修复</h3>
+<ul>
+<li>修复string空字符串bug</li>
+<li>修复windows下asio的一些bug</li>
+<li>修复一些编译问题</li>
+</ul>
+<h2 id="v1-4-7_rc1">v1.4.7_rc1</h2>
+<h3 id="-">新特性</h3>
+<ul>
+<li>增加asio模块，支持各种异步socket/file操作，支持异步dns、ssl（依赖polarssl/openssl）、http</li>
+<li>增加http cookie支持，完善http客户端协议</li>
+<li>增加sql数据库模块，依赖sqlite3/mysql</li>
+<li>增加object模块</li>
+<li>新增min/max heap容器，新增<code>list_entry</code>、<code>single_list_entry</code>等外置轻量链表实现，和<code>list</code>、<code>single_list</code>不同的是，不需要维护内部内存，而且更加灵活，新增bloom_filter</li>
+<li>新增remove、walk、count、for等常用算法支持</li>
+<li>新增线程池、定时器、信号量、自旋锁、atomic64等常用系统操作</li>
+<li>新增http服务器、http爬虫、http下载器等实用性demo</li>
+</ul>
+<h3 id="-">改进</h3>
+<ul>
+<li>重构stream模块，并新增<code>async_stream</code>、<code>async_transfer</code>、<code>transfer_pool</code>等新特性。</li>
+<li>优化和完善libc、libm的接口</li>
+<li>重构整个内存管理架构，完善内存检测的支持，优化内存使用和效率</li>
+</ul>
+<h3 id="bugs-">Bugs修复</h3>
+<ul>
+<li>修复和优化xml解析模块</li>
+</ul>
