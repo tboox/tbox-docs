@@ -41,7 +41,7 @@
 <li><strong>chunked_filter：http</strong> chunked编码的解码过滤器</li>
 </ol>
 <p>如果在一个xml解析器上同时挂接：</p>
-<pre><code>http/xml =&gt; chunked_filter =&gt; zip_filter =&gt; charset_filter =&gt; stream =&gt; xml_reader
+<pre><code>http/xml => chunked_filter => zip_filter => charset_filter => stream => xml_reader
 </code></pre><p>就可以实现对xml文件的边下载、边解压、边转码、边解析，这样就可以完美支持大规模xml数据的解析支持，而且内存使用率也不会太高</p>
 <p>另外我们还可以<strong>基于流的传输器</strong>将两路stream进行连接，实现方便的http下载、上传、文件之间的copy等等。</p>
 <p>目前的流可以支持如下几种url格式：</p>
@@ -62,23 +62,23 @@
 <h3 id="-">流的常用初始化操作</h3>
 <p>下面直接上代码吧，基本上看下注释就知道怎么使用了，嘿嘿。。。</p>
 <pre><code class="lang-c">    // 初始化文件流
-    tb_stream_ref_t stream = tb_stream_init_from_url(&quot;/root/home/file&quot;);
-    tb_stream_ref_t stream = tb_stream_init_from_file(&quot;/root/home/file&quot;, TB_FILE_MODE_RW | TB_FILE_MODE_CREAT | TB_FILE_MODE_BINARY | TB_FILE_MODE_TRUNC);
+    tb_stream_ref_t stream = tb_stream_init_from_url("/root/home/file");
+    tb_stream_ref_t stream = tb_stream_init_from_file("/root/home/file", TB_FILE_MODE_RW | TB_FILE_MODE_CREAT | TB_FILE_MODE_BINARY | TB_FILE_MODE_TRUNC);
 
     // 初始化http流
-    tb_stream_ref_t stream = tb_stream_init_from_url(&quot;http://www.xxxx.com/file?args=xxx&quot;);
-    tb_stream_ref_t stream = tb_stream_init_from_http(&quot;www.xxxx.com&quot;, 80, &quot;/file?args=xxx&quot;,tb_false );
+    tb_stream_ref_t stream = tb_stream_init_from_url("http://www.xxxx.com/file?args=xxx");
+    tb_stream_ref_t stream = tb_stream_init_from_http("www.xxxx.com", 80, "/file?args=xxx",tb_false );
 
     // 初始化tcp流
-    tb_stream_ref_t stream = tb_stream_init_from_url(&quot;sock://localhost/8080&quot;);
-    tb_stream_ref_t stream = tb_stream_init_from_sock(&quot;localhost&quot;, 8080, TB_SOCKET_TYPE_TCP, tb_false);
+    tb_stream_ref_t stream = tb_stream_init_from_url("sock://localhost/8080");
+    tb_stream_ref_t stream = tb_stream_init_from_sock("localhost", 8080, TB_SOCKET_TYPE_TCP, tb_false);
 
     // 初始化udp流
-    tb_stream_ref_t stream = tb_stream_init_from_url(&quot;sock://localhost/8080?udp=&quot;);
-    tb_stream_ref_t stream = tb_stream_init_from_sock(&quot;localhost&quot;, 8080, TB_SOCKET_TYPE_UDP, tb_false);
+    tb_stream_ref_t stream = tb_stream_init_from_url("sock://localhost/8080?udp=");
+    tb_stream_ref_t stream = tb_stream_init_from_sock("localhost", 8080, TB_SOCKET_TYPE_UDP, tb_false);
 
     // 初始化数据流
-    tb_stream_ref_t stream = tb_stream_init_from_url(&quot;data://base64_data&quot;);
+    tb_stream_ref_t stream = tb_stream_init_from_url("data://base64_data");
     tb_stream_ref_t stream = tb_stream_init_from_data(data, size);
 
     // 初始化字符集编码流
@@ -89,7 +89,7 @@
 </code></pre>
 <h3 id="-">非阻塞读取模式</h3>
 <pre><code class="lang-c">    // 初始化http流
-    tb_stream_ref_t stream = tb_stream_init_from_url(&quot;https://tboox.org&quot;);
+    tb_stream_ref_t stream = tb_stream_init_from_url("https://tboox.org");
     if (stream)
     {
         // 阻塞打开流，如果想在其他线程中断它，可以调用tb_stream_kill来实现
@@ -98,11 +98,11 @@
             /* 判断流是否读取结束
              * 
              * 1. 如果这个流是能获取到文件大小的: 
-             * tb_stream_size(stream) &gt;= 0 的情况下， 流读取偏移到流尾部，
+             * tb_stream_size(stream) >= 0 的情况下， 流读取偏移到流尾部，
              * beof 就直接返回tb_false 表示结束了。
              *
              * 2. 如果这个流是流式， 无法获取实际大小， 比如 http chunked、filter 流
-             * tb_stream_size(stream) &lt; 0 的情况下
+             * tb_stream_size(stream) < 0 的情况下
              * 这个时候 beof 永远是 tb_true， 流的结束 是通过 read 和 wait 来判断的。
              * 
              * 因此这种非阻塞读取模式是完全通用的，针对各种流模式。
@@ -118,9 +118,9 @@
                     real = tb_stream_wait(stream, TB_STREAM_WAIT_READ, tb_stream_timeout(stream));
 
                     // 检测返回值，如果等待失败，返回：-1，或者等待超时，返回：0， 都对流进行结束读取处理
-                    tb_check_break(real &gt; 0);
+                    tb_check_break(real > 0);
                 }
-                else if (real &lt; 0) break;
+                else if (real < 0) break;
             }
 
             // 关闭流，stream是可以支持重复打开关闭的
@@ -133,7 +133,7 @@
 </code></pre>
 <h3 id="-">阻塞读取模式</h3>
 <pre><code class="lang-c">    // 初始化file流，支持windows、unix路径
-    tb_stream_ref_t stream = tb_stream_init_from_url(&quot;C://home/file&quot;);
+    tb_stream_ref_t stream = tb_stream_init_from_url("C://home/file");
     if (stream)
     {
         // 阻塞打开流，如果想在其他线程中断它，可以调用tb_stream_kill来实现
@@ -147,14 +147,14 @@
              * 注： tb_hong_t 是 tb_long_t 的升级版表示，也就是 tb_sint64_t
              * 注： tb_hize_t 是 tb_size_t 的升级版表示，也就是 tb_uint64_t
              *
-             * 如果size &gt;= 0， 表示这个流是能够预先获取到大小的
-             * 如果size &lt; 0， 表示这个流是完全流化，只能一直读直到读取中断，才能获取到实际大小
+             * 如果size >= 0， 表示这个流是能够预先获取到大小的
+             * 如果size < 0， 表示这个流是完全流化，只能一直读直到读取中断，才能获取到实际大小
              *
              */
             tb_hong_t size = tb_stream_size(stream);
-            if (size &gt;= 0)
+            if (size >= 0)
             {
-                while (read &gt; size)
+                while (read > size)
                 {
                     // 计算需要读取的大小
                     tb_size_t need = tb_min(TB_STREAM_BLOCK_MAXN, size - read);
@@ -207,7 +207,7 @@
 </code></pre>
 <h3 id="-">阻塞写格式化字符数据到流</h3>
 <pre><code class="lang-c">    // 失败返回：-1， 成功返回实际写入的数据大小
-    tb_long_t real = tb_stream_printf(&quot;hello world: %s, %d\\n&quot;, &quot;!&quot;, 12345678);
+    tb_long_t real = tb_stream_printf("hello world: %s, %d\\n", "!", 12345678);
 </code></pre>
 <h3 id="-">阻塞写入一行数据到流</h3>
 <pre><code class="lang-c">    // 失败返回： -1,  成功返回实际写入大小
@@ -224,10 +224,10 @@
 <h3 id="-">通过流读写压缩文件</h3>
 <p>这里为了使代码更加简洁，直接用了transfer来挂接两路流的传输操作。</p>
 <pre><code class="lang-c">    // 初始化文件输入流
-    tb_stream_ref_t istream = tb_stream_init_from_url(&quot;/home/file.txt&quot;);
+    tb_stream_ref_t istream = tb_stream_init_from_url("/home/file.txt");
 
     // 初始化文件输出流
-    tb_stream_ref_t ostream = tb_stream_init_from_file(&quot;/home/file.gz&quot;, TB_FILE_MODE_RW | TB_FILE_MODE_CREAT | TB_FILE_MODE_BINARY | TB_FILE_MODE_TRUNC);
+    tb_stream_ref_t ostream = tb_stream_init_from_file("/home/file.gz", TB_FILE_MODE_RW | TB_FILE_MODE_CREAT | TB_FILE_MODE_BINARY | TB_FILE_MODE_TRUNC);
 
     // 初始化解压缩流，以istream作为输入
     tb_stream_ref_t fstream = tb_stream_init_filter_from_zip(istream, TB_ZIP_ALGO_GZIP, TB_ZIP_ACTION_INFLATE);
@@ -320,13 +320,13 @@
         tb_assert_and_check_return_val(rstream, tb_false);
 
         // 初始化一个buffer队列，并注册自动释放接口：tb_real_buffer_exit，之后有说明
-        rstream-&gt;buffers = tb_queue_init(0, tb_element_mem(sizeof(tb_real_buffer_t), tb_real_buffer_exit, tb_null));
+        rstream->buffers = tb_queue_init(0, tb_element_mem(sizeof(tb_real_buffer_t), tb_real_buffer_exit, tb_null));
 
         // init size
-        rstream-&gt;size = 0;
+        rstream->size = 0;
 
         // ok
-        return !!rstream-&gt;buffers;
+        return !!rstream->buffers;
     }
 
     // 实现close回调接口，用于关闭stream，tb_stream_clos会用到
@@ -337,8 +337,8 @@
         tb_assert_and_check_return_val(rstream, tb_false);
 
         // exit buffers
-        if (rstream-&gt;buffers) tb_queue_exit(rstream-&gt;buffers);
-        rstream-&gt;buffers = tb_null;
+        if (rstream->buffers) tb_queue_exit(rstream->buffers);
+        rstream->buffers = tb_null;
 
         // ok
         return tb_true;
@@ -352,11 +352,11 @@
         tb_assert_and_check_return(rstream);
 
         // exit buffers
-        if (rstream-&gt;buffers) tb_queue_exit(rstream-&gt;buffers);
-        rstream-&gt;buffers = tb_null;
+        if (rstream->buffers) tb_queue_exit(rstream->buffers);
+        rstream->buffers = tb_null;
 
         // clear size
-        rstream-&gt;size = 0;
+        rstream->size = 0;
     }
 
     // 实现read回调接口，用于读取数据，tb_stream_read/tb_stream_bread等接口会用到
@@ -364,7 +364,7 @@
     {
         // check
         tb_stream_real_ref_t rstream = (tb_stream_real_ref_t)stream;
-        tb_assert_and_check_return_val(rstream &amp;&amp; rstream-&gt;buffers, -1);
+        tb_assert_and_check_return_val(rstream &amp;&amp; rstream->buffers, -1);
 
         // check
         tb_check_return_val(data, -1);
@@ -372,31 +372,31 @@
 
         // 依次从队列头部读取每块buffer的数据，直到读满为止
         tb_long_t read = 0;
-        while (read &lt; size &amp;&amp; tb_queue_size(rstream-&gt;buffers))
+        while (read < size &amp;&amp; tb_queue_size(rstream->buffers))
         {
             // get buffer
-            tb_real_buffer_ref_t buffer = tb_queue_get(rstream-&gt;buffers);
-            tb_assert_and_check_break(buffer &amp;&amp; buffer-&gt;data &amp;&amp; buffer-&gt;size);
+            tb_real_buffer_ref_t buffer = tb_queue_get(rstream->buffers);
+            tb_assert_and_check_break(buffer &amp;&amp; buffer->data &amp;&amp; buffer->size);
 
             // read data
-            if (buffer-&gt;read &lt; buffer-&gt;size)
+            if (buffer->read < buffer->size)
             {
                 // calculate the need size
-                tb_size_t need = tb_min(size - read, buffer-&gt;size - buffer-&gt;read);
+                tb_size_t need = tb_min(size - read, buffer->size - buffer->read);
 
                 // copy data
-                tb_memcpy(data + read, buffer-&gt;data + buffer-&gt;read, need);
+                tb_memcpy(data + read, buffer->data + buffer->read, need);
 
                 // update the read size for buffer
-                buffer-&gt;read += need;
+                buffer->read += need;
 
                 // update the total read size
                 read += need;
             }
 
             // 将读空的buffer释放掉
-            if (buffer-&gt;read == buffer-&gt;size)
-                tb_queue_pop(rstream-&gt;buffers);
+            if (buffer->read == buffer->size)
+                tb_queue_pop(rstream->buffers);
         }
 
         // ok?
@@ -408,10 +408,10 @@
     {
         // check
         tb_stream_real_ref_t rstream = (tb_stream_real_ref_t)stream;
-        tb_assert_and_check_return_val(rstream &amp;&amp; rstream-&gt;buffers, -1);
+        tb_assert_and_check_return_val(rstream &amp;&amp; rstream->buffers, -1);
 
         // 当前是否有数据可读？
-        return tb_queue_size(rstream-&gt;buffers)? TB_STREAM_WAIT_READ : TB_STREAM_WAIT_NONE;
+        return tb_queue_size(rstream->buffers)? TB_STREAM_WAIT_READ : TB_STREAM_WAIT_NONE;
     }
 
     // 实现ctrl回调接口，用于设置和获取一些状态，扩展一些自定义的接口，tb_stream_ctrl接口会用到
@@ -431,7 +431,7 @@
                 tb_assert_and_check_break(psize);
 
                 // 获取数据流大小，tb_stream_size有用到
-                *psize = rstream-&gt;size;
+                *psize = rstream->size;
 
                 // ok
                 return tb_true;
@@ -440,7 +440,7 @@
         case TB_STREAM_CTRL_REAL_PUSH:
             {
                 // check
-                tb_assert_and_check_break(rstream-&gt;buffers);
+                tb_assert_and_check_break(rstream->buffers);
 
                 // the data and size
                 tb_byte_t const*    data = (tb_byte_t const*)tb_va_arg(args, tb_byte_t const*);
@@ -452,10 +452,10 @@
                 buffer.data = tb_memdup(data, size);
                 buffer.size = size;
                 buffer.read = 0;
-                tb_queue_put(rstream-&gt;buffers, &amp;buffer);
+                tb_queue_put(rstream->buffers, &amp;buffer);
 
                 // 更新总的数据大小
-                rstream-&gt;size += size;
+                rstream->size += size;
 
                 // ok
                 return tb_true;
@@ -476,10 +476,10 @@
         tb_assert_and_check_return(buffer);
 
         // exit it
-        if (buffer-&gt;data) tb_free(buffer-&gt;data);
-        buffer-&gt;data = tb_null;
-        buffer-&gt;size = 0;
-        buffer-&gt;read = 0;
+        if (buffer->data) tb_free(buffer->data);
+        buffer->data = tb_null;
+        buffer->size = 0;
+        buffer->read = 0;
     }
 </code></pre>
 <p>最后，贴下咱们这个自定义stream使用：</p>
@@ -494,10 +494,10 @@
             // read line
             tb_long_t size = 0;
             tb_char_t line[TB_STREAM_BLOCK_MAXN];
-            while ((size = tb_stream_bread_line(stream, line, sizeof(line))) &gt;= 0)
+            while ((size = tb_stream_bread_line(stream, line, sizeof(line))) >= 0)
             {
                 // trace
-                tb_trace_i(&quot;line: %s&quot;, line);
+                tb_trace_i("line: %s", line);
             }
         }
 

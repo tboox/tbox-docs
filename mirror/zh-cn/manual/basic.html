@@ -31,19 +31,19 @@
     <h2 id="-">打印输出</h2>
 <h3 id="-info-">打印info信息</h3>
 <p>在终端下显示输出一行信息，会自动换行，调试、发布模式都会显示</p>
-<pre><code class="lang-c">tb_trace_i(&quot;hello world&quot;);
+<pre><code class="lang-c">tb_trace_i("hello world");
 </code></pre>
 <p>显示：<code>[tbox]: hello world</code></p>
-<p>!&gt; 每行输出都带有标记前缀，来表示哪个模块的信息，默认是<code>[tbox]</code>， 但也可以通过修改<code>TB_TRACE_PREFIX</code>宏来重定义。</p>
+<p>!> 每行输出都带有标记前缀，来表示哪个模块的信息，默认是<code>[tbox]</code>， 但也可以通过修改<code>TB_TRACE_PREFIX</code>宏来重定义。</p>
 <h3 id="-">打印调试信息</h3>
 <p>输出调试信息，仅在调试模式下起作用。</p>
-<pre><code class="lang-c">tb_trace_d(&quot;hello world&quot;);
+<pre><code class="lang-c">tb_trace_d("hello world");
 </code></pre>
 <p>显示：<code>[tbox]: hello world</code></p>
-<p>!&gt; 只有在开启调试模式：make config DEBUG=y的情况，或者模块内部定义了<code>TB_TRACE_MODULE_DEBUG == 1</code>的时候才会进行输出，否则编译的时候会直接忽略掉。</p>
+<p>!> 只有在开启调试模式：make config DEBUG=y的情况，或者模块内部定义了<code>TB_TRACE_MODULE_DEBUG == 1</code>的时候才会进行输出，否则编译的时候会直接忽略掉。</p>
 <h3 id="-">打印警告信息</h3>
 <p>输出警告信息，调试、发布模式都会显示</p>
-<pre><code class="lang-c">tb_trace_w(&quot;hello world&quot;);
+<pre><code class="lang-c">tb_trace_w("hello world");
 </code></pre>
 <p>显示：<code>[tbox]: [warning]: hello world</code></p>
 <h3 id="-">打印其他信息</h3>
@@ -53,15 +53,15 @@
 <p>显示：<code>[tbox]: [no_impl]: at func: ..., line: ..., file: ...</code></p>
 <h3 id="-">分模块打印</h3>
 <p>输出子模块标记</p>
-<pre><code class="lang-c">#define TB_TRACE_MODULE_NAME             &quot;module&quot;
-#include &quot;tbox.h&quot;
+<pre><code class="lang-c">#define TB_TRACE_MODULE_NAME             "module"
+#include "tbox.h"
 
-tb_trace_i(&quot;hello world&quot;);
+tb_trace_i("hello world");
 </code></pre>
 <p>显示：<code>[tbox]: [module]: hello world</code></p>
 <h3 id="-">输出到文件</h3>
 <pre><code class="lang-c">tb_trace_mode_set(TB_TRACE_MODE_FILE);
-tb_trace_file_set_path(&quot;/tmp/log&quot;, tb_false);
+tb_trace_file_set_path("/tmp/log", tb_false);
 </code></pre>
 <p>就可以输出到/tmp/log中了。</p>
 <h3 id="-">其他平台输出</h3>

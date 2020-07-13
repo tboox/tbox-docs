@@ -209,7 +209,7 @@ $ xmake f -p linux --sdk=/home/sdk #--bin=/home/sdk/bin
 $ xmake
 </code></pre>
 <h2 id="-">例子</h2>
-<pre><code class="lang-c">#include &quot;tbox/tbox.h&quot;
+<pre><code class="lang-c">#include "tbox/tbox.h"
 
 int main(int argc, char** argv)
 {
@@ -217,21 +217,21 @@ int main(int argc, char** argv)
     if (!tb_init(tb_null, tb_null)) return 0;
 
     // trace
-    tb_trace_i(&quot;hello tbox&quot;);
+    tb_trace_i("hello tbox");
 
     // init vector
     tb_vector_ref_t vector = tb_vector_init(0, tb_element_cstr(tb_true));
     if (vector)
     {
         // insert item
-        tb_vector_insert_tail(vector, &quot;hello&quot;);
-        tb_vector_insert_tail(vector, &quot;tbox&quot;);
+        tb_vector_insert_tail(vector, "hello");
+        tb_vector_insert_tail(vector, "tbox");
 
         // dump all items
         tb_for_all (tb_char_t const*, cstr, vector)
         {
             // trace
-            tb_trace_i(&quot;%s&quot;, cstr);
+            tb_trace_i("%s", cstr);
         }
 
         // exit vector
@@ -239,7 +239,7 @@ int main(int argc, char** argv)
     }
 
     // init stream
-    tb_stream_ref_t stream = tb_stream_init_from_url(&quot;http://www.xxx.com/file.txt&quot;);
+    tb_stream_ref_t stream = tb_stream_init_from_url("http://www.xxx.com/file.txt");
     if (stream)
     {
         // open stream
@@ -248,10 +248,10 @@ int main(int argc, char** argv)
             // read line
             tb_long_t size = 0;
             tb_char_t line[TB_STREAM_BLOCK_MAXN];
-            while ((size = tb_stream_bread_line(stream, line, sizeof(line))) &gt;= 0)
+            while ((size = tb_stream_bread_line(stream, line, sizeof(line))) >= 0)
             {
                 // trace
-                tb_trace_i(&quot;line: %s&quot;, line);
+                tb_trace_i("line: %s", line);
             }
         }
 

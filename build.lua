@@ -93,6 +93,10 @@ function main()
             local f = io.open(htmlfile, 'w')
             if f then
                 f:write(header(rawurl))
+                htmldata = htmldata:gsub("&%a-;", function (w) 
+                    local maps = {["&lt;"] = "<", ["&gt;"] = ">", ["&quot;"] = "\""}
+                    return maps[w]
+                end)
                 f:write(htmldata)
                 f:write(tailer())
                 f:close()

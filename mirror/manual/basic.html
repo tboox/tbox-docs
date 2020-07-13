@@ -31,19 +31,19 @@
     <h2 id="print">Print</h2>
 <h3 id="printing-info-information">Printing info information</h3>
 <p>Display a line of information under the terminal, it will automatically wrap, debugging, release mode will be displayed</p>
-<pre><code class="lang-c">tb_trace_i(&quot;hello world&quot;);
+<pre><code class="lang-c">tb_trace_i("hello world");
 </code></pre>
 <p>Display: <code>[tbox]: hello world</code></p>
-<p>!&gt; Each line of output has a tag prefix to indicate which module information, the default is <code>[tbox]</code>, but can also be redefined by modifying the <code>tb_TRACE_PREFIX</code> macro.</p>
+<p>!> Each line of output has a tag prefix to indicate which module information, the default is <code>[tbox]</code>, but can also be redefined by modifying the <code>tb_TRACE_PREFIX</code> macro.</p>
 <h3 id="print-debugging-information">Print debugging information</h3>
 <p>Output debug information, only in debug mode.</p>
-<pre><code class="lang-c">tb_trace_d(&quot;hello world&quot;);
+<pre><code class="lang-c">tb_trace_d("hello world");
 </code></pre>
 <p>Display: <code>[tbox]: hello world</code></p>
-<p>!&gt; The output will only be output when the debug mode is enabled: make config DEBUG=y, or if the module internally defines <code>TB_TRACE_MODULE_DEBUG == 1</code>, otherwise it will be ignored directly when compiling.</p>
+<p>!> The output will only be output when the debug mode is enabled: make config DEBUG=y, or if the module internally defines <code>TB_TRACE_MODULE_DEBUG == 1</code>, otherwise it will be ignored directly when compiling.</p>
 <h3 id="print-warning-message">Print warning message</h3>
 <p>Output warning message, debugging and release mode will be displayed</p>
-<pre><code class="lang-c">tb_trace_w(&quot;hello world&quot;);
+<pre><code class="lang-c">tb_trace_w("hello world");
 </code></pre>
 <p>Display: <code>[tbox]: [warning]: hello world</code></p>
 <h3 id="print-other-information">Print other information</h3>
@@ -53,15 +53,15 @@
 <p>Display: <code>[tbox]: [no_impl]: at func: ..., line: ..., file: ...</code></p>
 <h3 id="print-by-module">Print by module</h3>
 <p>Output submodule tag</p>
-<pre><code class="lang-c">#define TB_TRACE_MODULE_NAME &quot;module&quot;
-#include &quot;tbox.h&quot;
+<pre><code class="lang-c">#define TB_TRACE_MODULE_NAME "module"
+#include "tbox.h"
 
-tb_trace_i(&quot;hello world&quot;);
+tb_trace_i("hello world");
 </code></pre>
 <p>Display: <code>[tbox]: [module]: hello world</code></p>
 <h3 id="output-to-file">Output to file</h3>
 <pre><code class="lang-c">tb_trace_mode_set(TB_TRACE_MODE_FILE);
-tb_trace_file_set_path(&quot;/tmp/log&quot;, tb_false);
+tb_trace_file_set_path("/tmp/log", tb_false);
 </code></pre>
 <p>It can be output to /tmp/log.</p>
 <h3 id="other-platform-output">Other platform output</h3>

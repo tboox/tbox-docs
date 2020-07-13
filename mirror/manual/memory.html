@@ -53,27 +53,27 @@
 <p>Since each memory block is adjacent to it, there is no double-chain maintenance, no memory block, and there is a block header. The merge process only changes the size field of the memory block header. Such a merge does not affect the efficiency.</p>
 <p>Since there is no double-chain maintenance of free memory like the buddy algorithm, although the space and time for the maintenance of the linked list are saved, each time the memory is allocated, all the blocks are sequentially traversed to find the free memory, which is too low efficiency. In order to solve this problem, large_pool internally predicts different levels of blocks. Each time free or malloc, if the current and neighboring idles are fast, they are cached into the prediction pool of the corresponding level. The specific classification is as follows:</p>
 <pre><code>     --------------------------------------
-    | &gt;0KB :      4KB       | &gt; 0*page     | 
+    | >0KB :      4KB       | > 0*page     | 
     |-----------------------|--------------
-    | &gt;4KB :      8KB       | &gt; 1*page     | 
+    | >4KB :      8KB       | > 1*page     | 
     |-----------------------|--------------
-    | &gt;8KB :    12-16KB     | &gt; 2*page     | 
+    | >8KB :    12-16KB     | > 2*page     | 
     |-----------------------|--------------
-    | &gt;16KB :   20-32KB     | &gt; 4*page     | 
+    | >16KB :   20-32KB     | > 4*page     | 
     |-----------------------|--------------
-    | &gt;32KB :   36-64KB     | &gt; 8*page     | 
+    | >32KB :   36-64KB     | > 8*page     | 
     |-----------------------|--------------
-    | &gt;64KB :   68-128KB    | &gt; 16*page    | 
+    | >64KB :   68-128KB    | > 16*page    | 
     |-----------------------|--------------
-    | &gt;128KB :  132-256KB   | &gt; 32*page    | 
+    | >128KB :  132-256KB   | > 32*page    | 
     |-----------------------|--------------
-    | &gt;256KB :  260-512KB   | &gt; 64*page    | 
+    | >256KB :  260-512KB   | > 64*page    | 
     |-----------------------|--------------
-    | &gt;512KB :  516-1024KB  | &gt; 128*page   | 
+    | >512KB :  516-1024KB  | > 128*page   | 
     |-----------------------|--------------
-    | &gt;1024KB : 1028-...KB  | &gt; 256*page   | 
+    | >1024KB : 1028-...KB  | > 256*page   | 
      --------------------------------------
-</code></pre><p>Since it is usually not allocated too much memory, it is sufficient to be able to predict 1m of memory, and for &gt;1m of memory, a separate prediction is added here to cope with occasional oversized allocations and to make the overall allocation process more Unity.</p>
+</code></pre><p>Since it is usually not allocated too much memory, it is sufficient to be able to predict 1m of memory, and for >1m of memory, a separate prediction is added here to cope with occasional oversized allocations and to make the overall allocation process more Unity.</p>
 <p>If the current level of the prediction block does not exist, it will go to the next level of the prediction block to find, if not found, then go back and traverse the entire memory pool.</p>
 <p>Under the actual test, the prediction success of each block is basically above 95%, which means that in most cases, the distribution efficiency is maintained at the O(1) level.</p>
 <h3 id="small-block-memory-pool-small_pool">Small block memory pool: small_pool</h3>
@@ -119,7 +119,7 @@
          --------------
         |              |
      --------------    |
-    |     slot     |&lt;--
+    |     slot     |<--
     |--------------|
     ||||||||||||||||  
     |--------------| 
@@ -137,7 +137,7 @@
     partial:
 
      --------------       --------------               --------------
-    |     slot     | &lt;=&gt; |     slot     | &lt;=&gt; ... &lt;=&gt; |     slot     |
+    |     slot     | <=> |     slot     | <=> ... <=> |     slot     |
     |--------------|     |--------------|             |--------------|
     ||||||||||||||||     |              |             |              |
     |--------------|     |--------------|             |--------------|
@@ -155,7 +155,7 @@
     full:
 
      --------------       --------------               --------------
-    |     slot     | &lt;=&gt; |     slot     | &lt;=&gt; ... &lt;=&gt; |     slot     |
+    |     slot     | <=> |     slot     | <=> ... <=> |     slot     |
     |--------------|     |--------------|             |--------------|
     ||||||||||||||||     ||||||||||||||||             ||||||||||||||||
     |--------------|     |--------------|             |--------------|
@@ -181,7 +181,7 @@
 <li>If the released slot belongs to the full list and becomes partially idle, move the slot to the partial free slot list.</li>
 </ol>
 <p><strong> Extra mention is </strong>:</p>
-<p>When large_pool allocates a space to a slot each time, the remaining part of the remaining space (&lt;1*page) can also be directly returned to the slot, so that the slot can make full use of this part of the data, so that more memory can be segmented. Piece.</p>
+<p>When large_pool allocates a space to a slot each time, the remaining part of the remaining space (<1*page) can also be directly returned to the slot, so that the slot can make full use of this part of the data, so that more memory can be segmented. Piece.</p>
 <p>E.g: </p>
 <p>Fixed_pool grows a slot containing 256 32B memory blocks at a time (requires 8192B size +16B internal data maintenance size). In fact, when using large_pool allocation, it needs 8208B size. Because it needs to be page aligned (4KB), the actual allocation is indeed Take up the space of <code>8192+4096: 12288B</code>.</p>
 <p>But large_pool supports returning all the spatial data to the upper layer, so the slot actually gets a 12288B size memory, and also knows its actual size is: 12288B, so the actual split is <code>(12288-(32B slot internal maintenance data) )) / 32</code> is 383 memory blocks.</p>
@@ -189,7 +189,7 @@
 <h3 id="slot-in-fixed_pool">slot in fixed_pool</h3>
 <p>Although the analogy and slab in linux, but its data structure is not the same as slab, it does not like the slab, for each idle small block is maintained with a linked list, but directly with the bit segment to maintain the information of idle, This saves memory, and by optimizing the algorithm, its allocation efficiency is almost the same as slab.</p>
 <p>At the head of the fixed_pool slot, there is a small piece of independent data for maintaining the idle information of each small block. Each block temporarily uses only one bit of information to determine whether the block is free, because there is no memory block. They are all fixed size, so the positional positioning of the bits can be calculated by index.</p>
-<p>And each release and allocation, will cache a double word size bit information to predict the next allocation, because it is double word size, there are a total of 32 bits, so each cache can predict up to 32 adjacent Memory block. Therefore, in most cases, the prediction success rate is always &gt;98%, the allocation efficiency is maintained at O(1), which is much higher than the prediction rate of large_pool, so the shunt of small_pool to large_pool is still to a certain extent. Further improve the memory allocation efficiency.</p>
+<p>And each release and allocation, will cache a double word size bit information to predict the next allocation, because it is double word size, there are a total of 32 bits, so each cache can predict up to 32 adjacent Memory block. Therefore, in most cases, the prediction success rate is always >98%, the allocation efficiency is maintained at O(1), which is much higher than the prediction rate of large_pool, so the shunt of small_pool to large_pool is still to a certain extent. Further improve the memory allocation efficiency.</p>
 <p>Even if it is unlucky, it is not predicted to be successful, the order of the slot is traversed to find the algorithm that is idle and fast, and it is quite efficient and completely highly optimized, as described in detail below.</p>
 <h4 id="slot-s-sequential-traversal-allocation-algorithm-optimization">slot&#39;s sequential traversal allocation algorithm optimization</h4>
 <p>Here we mainly use several built-in functions of gcc:</p>
@@ -210,10 +210,10 @@
 
         // done
         tb_size_t n = 31;
-        if (x &amp; 0xffff0000) { n -= 16;  x &gt;&gt;= 16;   }
-        if (x &amp; 0xff00)     { n -= 8;   x &gt;&gt;= 8;    }
-        if (x &amp; 0xf0)       { n -= 4;   x &gt;&gt;= 4;    }
-        if (x &amp; 0xc)        { n -= 2;   x &gt;&gt;= 2;    }
+        if (x &amp; 0xffff0000) { n -= 16;  x >>= 16;   }
+        if (x &amp; 0xff00)     { n -= 8;   x >>= 8;    }
+        if (x &amp; 0xf0)       { n -= 4;   x >>= 4;    }
+        if (x &amp; 0xc)        { n -= 2;   x >>= 2;    }
         if (x &amp; 0x2)        { n--;                  }
         return n;
     }
@@ -246,7 +246,7 @@
 </code></pre>
 <h3 id="static-memory-allocator">Static Memory Allocator</h3>
 <p>We can also directly use a whole block of static buffer for maintenance, enable all features such as memory leak overflow detection, this difference with tb_default_allocator is,<br>This allocator is relatively lightweight, the internal data structure is simple, takes up less memory, and is suitable for low resource environments. For example, in some embedded environments, the resource utilization rate of this allocator is higher.</p>
-<p>!&gt; But this allocator does not support fragment optimization and is prone to fragmentation.</p>
+<p>!> But this allocator does not support fragment optimization and is prone to fragmentation.</p>
 <pre><code class="lang-c">tb_init(tb_null, tb_static_allocator((tb_byte_t*)malloc(300 * 1024 * 1024), 300 * 1024 * 1024));
 </code></pre>
 <h3 id="native-memory-splitter">Native Memory Splitter</h3>
@@ -264,7 +264,7 @@
 <pre><code class="lang-c">static tb_pointer_t tb_native_allocator_malloc(tb_allocator_ref_t allocator, tb_size_t size __tb_debug_decl__)
 {
     // trace
-    tb_trace_d(&quot;malloc(%lu) at %s(): %lu, %s&quot;, size, func_, line_, file_);
+    tb_trace_d("malloc(%lu) at %s(): %lu, %s", size, func_, line_, file_);
 
     // malloc it
     return malloc(size);
@@ -272,7 +272,7 @@
 static tb_pointer_t tb_native_allocator_ralloc(tb_allocator_ref_t allocator, tb_pointer_t data, tb_size_t size __tb_debug_decl__)
 {
     // trace
-    tb_trace_d(&quot;realloc(%p, %lu) at %s(): %lu, %s&quot;, data, size, func_, line_, file_);
+    tb_trace_d("realloc(%p, %lu) at %s(): %lu, %s", data, size, func_, line_, file_);
 
     // realloc it
     return realloc(data, size);
@@ -280,7 +280,7 @@ static tb_pointer_t tb_native_allocator_ralloc(tb_allocator_ref_t allocator, tb_
 static tb_bool_t tb_native_allocator_free(tb_allocator_ref_t allocator, tb_pointer_t data __tb_debug_decl__)
 {
     // trace    
-    tb_trace_d(&quot;free(%p) at %s(): %lu, %s&quot;, data, func_, line_, file_);
+    tb_trace_d("free(%p) at %s(): %lu, %s", data, func_, line_, file_);
 
     // free it
     return free(data);
@@ -306,7 +306,7 @@ tb_allocator_free(&amp;myallocator, data);
 <h2 id="memory-allocation-interface">Memory Allocation Interface</h2>
 <h3 id="data-distribution-interface">Data Distribution Interface</h3>
 <p>This type of interface can directly allocate memory data, but returns the <code>tb_pointer_t</code> type data, which can be accessed by the user who needs to do the type of strong transfer.</p>
-<p>!&gt; Among them malloc0 this suffix with 0 typeface interface, the allocated memory will automatically do memory clear 0 operation.</p>
+<p>!> Among them malloc0 this suffix with 0 typeface interface, the allocated memory will automatically do memory clear 0 operation.</p>
 <pre><code class="lang-c">tb_free(data)                               
 tb_malloc(size)                             
 tb_malloc0(size)                            
@@ -347,7 +347,7 @@ tb_ralloc_type(data, item, type)
 xxx_t* data = tb_malloc0_type(xxx_t);
 if (data)
 {
-    data-&gt;dummy = 0;
+    data->dummy = 0;
     tb_free(data);
 }
 </code></pre>
@@ -389,7 +389,7 @@ tb_align_ralloc(data, size, align)
 $ xmake
 </code></pre>
 <h3 id="memory-leak-detection">Memory leak detection</h3>
-<p>!&gt; Leak detection, you must exit the program completely, make sure that the <code>tb_exit()</code> interface is called before the detection can be triggered.</p>
+<p>!> Leak detection, you must exit the program completely, make sure that the <code>tb_exit()</code> interface is called before the detection can be triggered.</p>
 <p>The detection of memory leaks must be executed when tb_exit() is called immediately before the program exits. If there is a leak, it will be output to the terminal in detail.    </p>
 <pre><code class="lang-c">    tb_void_t tb_demo_leak()
     {
@@ -421,7 +421,7 @@ $ xmake
     }
 </code></pre>
 <p>Output:</p>
-<pre><code>    [tbox]: [memset]: [overflow]: [0x0 x 11] =&gt; [0x7f950b044508, 10]
+<pre><code>    [tbox]: [memset]: [overflow]: [0x0 x 11] => [0x7f950b044508, 10]
     [tbox]: [memset]: [overflow]: [0x0000010991a1c7]: 0   demo.b                              0x000000010991a1c7 tb_memset + 151
     [tbox]: [memset]: [overflow]: [0x000001098a2d01]: 1   demo.b                              0x00000001098a2d01 tb_demo_overflow + 97
     [tbox]: [memset]: [overflow]: [0x000001098a3044]: 2   demo.b                              0x00000001098a3044 tb_demo_memory_check_main + 20
@@ -455,7 +455,7 @@ $ xmake
     }
 </code></pre>
 <p>Output:</p>
-<pre><code>    [tbox]: [memcpy]: [overlap]: [0x7fe9b5042509, 5] =&gt; [0x7fe9b5042508, 5]
+<pre><code>    [tbox]: [memcpy]: [overlap]: [0x7fe9b5042509, 5] => [0x7fe9b5042508, 5]
     [tbox]: [memcpy]: [overlap]: [0x000001094403b8]: 0   demo.b                              0x00000001094403b8 tb_memcpy + 632
     [tbox]: [memcpy]: [overlap]: [0x000001093c99f9]: 1   demo.b                              0x00000001093c99f9 tb_demo_overlap + 105
     [tbox]: [memcpy]: [overlap]: [0x000001093c9a44]: 2   demo.b                              0x00000001093c9a44 tb_demo_memory_check_main + 20
@@ -487,7 +487,7 @@ $ xmake
     }
 </code></pre>
 <p>Output:</p>
-<pre><code>    [tbox]: [assert]: expr[((impl-&gt;used_info)[(index) &gt;&gt; 3] &amp; (0x1 &lt;&lt; ((index) &amp; 7)))]: double free data: 0x7fd93386c708 at tb_static_fixed_pool_free(): 612, memory/impl/static_fixed_pool.c
+<pre><code>    [tbox]: [assert]: expr[((impl->used_info)[(index) >> 3] &amp; (0x1 << ((index) &amp; 7)))]: double free data: 0x7fd93386c708 at tb_static_fixed_pool_free(): 612, memory/impl/static_fixed_pool.c
     [tbox]:     [0x0000010c9f553c]: 0   demo.b                              0x000000010c9f553c tb_static_fixed_pool_free + 972
     [tbox]:     [0x0000010c9ee7a9]: 1   demo.b                              0x000000010c9ee7a9 tb_fixed_pool_free_ + 713
     [tbox]:     [0x0000010ca01ff5]: 2   demo.b                              0x000000010ca01ff5 tb_small_pool_free_ + 885
