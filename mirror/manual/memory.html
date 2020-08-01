@@ -28,10 +28,10 @@
 <article class="markdown-body">
 <h4>This is a mirror page, please see the original page: </h4><a href="https://tboox.io/#/manual/memory">https://tboox.io/#/manual/memory</a>
 </br>
-    <h2 id="memory-overall-architecture">Memory overall architecture</h2>
+    <h2 id="memoryoverallarchitecture">Memory overall architecture</h2>
 <p>TBOX&#39;s memory management model, reference to the memory management mechanism of the Linux kernel, and made some improvements and optimizations based on it.</p>
 <p>![Memory Pool Architecture] (<a href="https://tboox.org/static/img/tbox/memorypool.png">https://tboox.org/static/img/tbox/memorypool.png</a>)</p>
-<h3 id="large-memory-pool-large_pool">Large memory pool: large_pool</h3>
+<h3 id="largememorypoollarge_pool">Large memory pool: large_pool</h3>
 <p>The bottom of the entire memory allocation is based on large_pool large memory allocation pool, similar to Linux&#39;s page-based allocation management, but the difference is that large_pool does not use buddy algorithm like Linux (2^N) *page is allocated, so if you need 2.1m of memory, you need to allocate 4m of memory blocks, so the strength is too big, very wasteful.</p>
 <p>Therefore, the large_pool internally uses N*page to allocate the minimum size based on page_size, so less than one page of space is wasted each time.</p>
 <p>And if the required memory is less than the entire page, the remaining memory will be returned to the upper layer. If the upper layer needs (such as small_pool), you can make full use of this extra memory space to optimize the memory utilization.</p>
@@ -76,7 +76,7 @@
 </code></pre><p>Since it is usually not allocated too much memory, it is sufficient to be able to predict 1m of memory, and for >1m of memory, a separate prediction is added here to cope with occasional oversized allocations and to make the overall allocation process more Unity.</p>
 <p>If the current level of the prediction block does not exist, it will go to the next level of the prediction block to find, if not found, then go back and traverse the entire memory pool.</p>
 <p>Under the actual test, the prediction success of each block is basically above 95%, which means that in most cases, the distribution efficiency is maintained at the O(1) level.</p>
-<h3 id="small-block-memory-pool-small_pool">Small block memory pool: small_pool</h3>
+<h3 id="smallblockmemorypoolsmall_pool">Small block memory pool: small_pool</h3>
 <p>Small memory allocation pool</p>
 <p>Whenever the upper layer calls malloc for memory allocation, go back and judge how much memory is needed. If the memory exceeds or equals one page, it will be allocated directly from large_pool. If it is less than one page, it will be allocated first through small_pool, small_pool Caches small chunks of memory and optimizes space management and allocation efficiency.</p>
 <p>Since most of the programs use small blocks of memory, the small_pool allocates a lot of memory, which reduces the pressure on the large_pool and reduces the amount of fragmentation. The small_pool is internally fixed by the fixed_pool. Fixed-size memory is managed without external fragmentation. The granularity of the small block memory itself is small, so the amount of internal fragmentation is also quite small.</p>
@@ -107,7 +107,7 @@
     |    fixed pool: 3072B* |  2049-3072B* |  
      -------------------------------------- 
 </code></pre><p>Among them, 96B, 192B, 384B, and 3072B are not based on the integer power of 2. This is mainly to reduce the internal fragmentation by using the space of small block memory more effectively.</p>
-<h3 id="fixed-block-memory-pool-fixed_pool">Fixed block memory pool: fixed_pool</h3>
+<h3 id="fixedblockmemorypoolfixed_pool">Fixed block memory pool: fixed_pool</h3>
 <p>As the name implies, fixed_pool is used to manage fixed-size memory allocation, which is equivalent to slub in linux, and fixed_pool is composed of multiple slots. Each slot is responsible for a contiguous memory space, managing the management of some memory blocks, similar to linux. Slab, each slot is maintained by double-chain, and with reference to the Linux management mechanism, it is divided into three types of slot management:</p>
 <ol>
 <li>The slot currently being allocated</li>
@@ -186,12 +186,12 @@
 <p>Fixed_pool grows a slot containing 256 32B memory blocks at a time (requires 8192B size +16B internal data maintenance size). In fact, when using large_pool allocation, it needs 8208B size. Because it needs to be page aligned (4KB), the actual allocation is indeed Take up the space of <code>8192+4096: 12288B</code>.</p>
 <p>But large_pool supports returning all the spatial data to the upper layer, so the slot actually gets a 12288B size memory, and also knows its actual size is: 12288B, so the actual split is <code>(12288-(32B slot internal maintenance data) )) / 32</code> is 383 memory blocks.</p>
 <p>More than 127 memory blocks have been maintained, and the internal fragment of large_pool has been fully utilized, further increasing memory utilization.</p>
-<h3 id="slot-in-fixed_pool">slot in fixed_pool</h3>
+<h3 id="slotinfixed_pool">slot in fixed_pool</h3>
 <p>Although the analogy and slab in linux, but its data structure is not the same as slab, it does not like the slab, for each idle small block is maintained with a linked list, but directly with the bit segment to maintain the information of idle, This saves memory, and by optimizing the algorithm, its allocation efficiency is almost the same as slab.</p>
 <p>At the head of the fixed_pool slot, there is a small piece of independent data for maintaining the idle information of each small block. Each block temporarily uses only one bit of information to determine whether the block is free, because there is no memory block. They are all fixed size, so the positional positioning of the bits can be calculated by index.</p>
 <p>And each release and allocation, will cache a double word size bit information to predict the next allocation, because it is double word size, there are a total of 32 bits, so each cache can predict up to 32 adjacent Memory block. Therefore, in most cases, the prediction success rate is always >98%, the allocation efficiency is maintained at O(1), which is much higher than the prediction rate of large_pool, so the shunt of small_pool to large_pool is still to a certain extent. Further improve the memory allocation efficiency.</p>
 <p>Even if it is unlucky, it is not predicted to be successful, the order of the slot is traversed to find the algorithm that is idle and fast, and it is quite efficient and completely highly optimized, as described in detail below.</p>
-<h4 id="slot-s-sequential-traversal-allocation-algorithm-optimization">slot&#39;s sequential traversal allocation algorithm optimization</h4>
+<h4 id="slotssequentialtraversalallocationalgorithmoptimization">slot&#39;s sequential traversal allocation algorithm optimization</h4>
 <p>Here we mainly use several built-in functions of gcc:</p>
 <ol>
 <li>__builtin_clz: Calculate the number of leading zeros for 32-bit integers</li>
@@ -227,14 +227,14 @@
 <li>If a bit segment is not 0xffffffff, the actual free block index is calculated by __builtin_clz(~x) and the actual allocation is made.</li>
 <li>Finally, if this 32-bit bit segment is not fully allocated, it can be cached to make predictions for the next allocation.</li>
 </ol>
-<h3 id="string-memory-pool-string_pool">String memory pool: string_pool</h3>
+<h3 id="stringmemorypoolstring_pool">String memory pool: string_pool</h3>
 <p>Speaking of this, TBOX&#39;s memory pool management model, the basic calculation is probably finished, here is simply to mention the string_pool, namely: string pool</p>
 <p>String_pool is mainly for upper-layer applications. For some modules that use small strings frequently and have a high repetition rate, they can be optimized by string_pool to further reduce memory usage. String_pool is internally maintained by reference counting + hash table. Only one copy of the same string is saved.</p>
 <p>For example, it can be used for string maintenance in cookies, string maintenance in the header part of http, and so on. .</p>
-<h2 id="switching-the-global-memory-allocator">Switching the global memory allocator</h2>
+<h2 id="switchingtheglobalmemoryallocator">Switching the global memory allocator</h2>
 <p>Tbox&#39;s default memory allocation is based entirely on its own memory pool architecture, support for fast memory allocation, and optimization of fragmentation, and supports a variety of memory leaks, overflow detection.</p>
 <p>If you don&#39;t want to use the default memory allocation management built into tbox, you can also switch to other allocation modes flexibly, because tbox now fully supports the allocator architecture.<br>As long as you pass in different distributor models in the init phase, you can quickly switch the allocation mode, for example:</p>
-<h3 id="default-memory-allocator">Default memory allocator</h3>
+<h3 id="defaultmemoryallocator">Default memory allocator</h3>
 <p>The default initialization of tbox uses the default tbox memory management. It will enable all features such as memory pool maintenance, fragment optimization, and memory leak overflow detection by default.</p>
 <pre><code class="lang-c">tb_init(tb_null, tb_null);
 </code></pre>
@@ -244,22 +244,22 @@
 <p>The default allocator, usually directly call the system malloc to use the system native native memory, just based on this layer of additional memory management and memory detection support, if you want to fully host on a contiguous memory, you can use the following way :</p>
 <pre><code class="lang-c">tb_init(tb_null, tb_default_allocator((tb_byte_t*)malloc(300 * 1024 * 1024), 300 * 1024 * 1024));
 </code></pre>
-<h3 id="static-memory-allocator">Static Memory Allocator</h3>
+<h3 id="staticmemoryallocator">Static Memory Allocator</h3>
 <p>We can also directly use a whole block of static buffer for maintenance, enable all features such as memory leak overflow detection, this difference with tb_default_allocator is,<br>This allocator is relatively lightweight, the internal data structure is simple, takes up less memory, and is suitable for low resource environments. For example, in some embedded environments, the resource utilization rate of this allocator is higher.</p>
 <p>!> But this allocator does not support fragment optimization and is prone to fragmentation.</p>
 <pre><code class="lang-c">tb_init(tb_null, tb_static_allocator((tb_byte_t*)malloc(300 * 1024 * 1024), 300 * 1024 * 1024));
 </code></pre>
-<h3 id="native-memory-splitter">Native Memory Splitter</h3>
+<h3 id="nativememorysplitter">Native Memory Splitter</h3>
 <p>Full use of the system native memory allocation, no internal processing and data maintenance, all features depend on the system environment, so memory pool and memory detection and other features are not supported, equivalent to direct pass to malloc and other system distribution interface.</p>
 <p>Users can use this allocator if they don&#39;t want to use the built-in memory pool maintenance of tbox.</p>
 <pre><code class="lang-c">tb_init(tb_null, tb_native_allocator());
 </code></pre>
-<h3 id="virtual-memory-allocator">Virtual Memory Allocator</h3>
+<h3 id="virtualmemoryallocator">Virtual Memory Allocator</h3>
 <p>After v1.6.4, tbox provides a new type of allocator: virtual memory allocator, mainly used to allocate some large chunks of memory.</p>
 <p>Usually, the user does not need it, because the default memory allocator of the tbox automatically switches to the virtual memory pool to allocate to the hyper-large memory block, but if the user wants to force the switch to the virtual memory allocation, it can also pass the following Mode switching use:</p>
 <pre><code class="lang-c">Tb_init(tb_null, tb_virtual_allocator());
 </code></pre>
-<h3 id="custom-memory-allocator">Custom Memory Allocator</h3>
+<h3 id="custommemoryallocator">Custom Memory Allocator</h3>
 <p>If you think that these allocators are not enough, you can customize your own memory allocator, let tbox use, the custom way is also very simple, here take the implementation code of <code>tb_native_allocator</code> as an example:</p>
 <pre><code class="lang-c">static tb_pointer_t tb_native_allocator_malloc(tb_allocator_ref_t allocator, tb_size_t size __tb_debug_decl__)
 {
@@ -303,8 +303,8 @@ myallocator.free              = tb_native_allocator_free;
 tb_allocator_ralloc(&amp;myallocator, data, 100);
 tb_allocator_free(&amp;myallocator, data);
 </code></pre>
-<h2 id="memory-allocation-interface">Memory Allocation Interface</h2>
-<h3 id="data-distribution-interface">Data Distribution Interface</h3>
+<h2 id="memoryallocationinterface">Memory Allocation Interface</h2>
+<h3 id="datadistributioninterface">Data Distribution Interface</h3>
 <p>This type of interface can directly allocate memory data, but returns the <code>tb_pointer_t</code> type data, which can be accessed by the user who needs to do the type of strong transfer.</p>
 <p>!> Among them malloc0 this suffix with 0 typeface interface, the allocated memory will automatically do memory clear 0 operation.</p>
 <pre><code class="lang-c">tb_free(data)                               
@@ -314,14 +314,14 @@ tb_nalloc(item, size)
 tb_nalloc0(item, size)                      
 tb_ralloc(data, size)                       
 </code></pre>
-<h3 id="string-allocation-interface">String allocation interface</h3>
+<h3 id="stringallocationinterface">String allocation interface</h3>
 <p>Tbox also provides a convenient assignment of string types. The data type of the operation is directly <code>tb_char_t*</code>, which eliminates the extra strong process.</p>
 <pre><code>tb_malloc_cstr(size)                        
 tb_malloc0_cstr(size)                       
 tb_nalloc_cstr(item, size)                  
 tb_nalloc0_cstr(item, size)                 
 tb_ralloc_cstr(data, size)                  
-</code></pre><h3 id="byte-data-distribution-interface">Byte data distribution interface</h3>
+</code></pre><h3 id="bytedatadistributioninterface">Byte data distribution interface</h3>
 <p>This is also the data distribution interface, the only difference is that by default the <code>tb_byte_t*</code> type of strong processing, access data read and write access.</p>
 <pre><code class="lang-c">tb_malloc_bytes(size)
 tb_malloc0_bytes(size)
@@ -329,7 +329,7 @@ tb_nalloc_bytes(item, size)
 tb_nalloc0_bytes(item, size)
 tb_ralloc_bytes(data, size)
 </code></pre>
-<h3 id="struct-structure-data-distribution-interface">struct structure data distribution interface</h3>
+<h3 id="structstructuredatadistributioninterface">struct structure data distribution interface</h3>
 <p>If you want to allocate some struct data, then this type of interface comes with a struct type to force processing.</p>
 <pre><code class="lang-c">tb_malloc_type(type)
 tb_malloc0_type(type)
@@ -352,7 +352,7 @@ if (data)
 }
 </code></pre>
 <p>As you can see, we have omitted the type conversion process, so this is an auxiliary interface that provides some convenience.</p>
-<h3 id="address-alignment-data-distribution-interface">Address Alignment Data Distribution Interface</h3>
+<h3 id="addressalignmentdatadistributioninterface">Address Alignment Data Distribution Interface</h3>
 <p>If we sometimes ask for the allocated memory data address, it must be aligned to the specified size, you can use this type of interface:</p>
 <pre><code class="lang-c">tb_align_free(data)                         
 tb_align_malloc(size, align)                
@@ -382,13 +382,13 @@ tb_align_ralloc(data, size, align)
 #   define tb_align8_ralloc(data, size)             tb_align_ralloc((tb_pointer_t)data, size, 8)
 #endif
 </code></pre>
-<h2 id="memory-detection">Memory Detection</h2>
+<h2 id="memorydetection">Memory Detection</h2>
 <p>TBOX&#39;s memory allocation in debug mode can detect memory leaks and out of bounds, and can also pinpoint the location of the memory where the problem is located, and the function call stack.</p>
 <p>To use the memory detection feature of tbox, you only need to switch to debug mode to compile:</p>
 <pre><code class="lang-bash">$ xmake f -m debug
 $ xmake
 </code></pre>
-<h3 id="memory-leak-detection">Memory leak detection</h3>
+<h3 id="memoryleakdetection">Memory leak detection</h3>
 <p>!> Leak detection, you must exit the program completely, make sure that the <code>tb_exit()</code> interface is called before the detection can be triggered.</p>
 <p>The detection of memory leaks must be executed when tb_exit() is called immediately before the program exits. If there is a leak, it will be output to the terminal in detail.    </p>
 <pre><code class="lang-c">    tb_void_t tb_demo_leak()
@@ -408,7 +408,7 @@ $ xmake
     [tbox]: [error]:     [0x007fff8c95a5fd]: 6   libdyld.dylib                       0x00007fff8c95a5fd start + 1
     [tbox]: [error]:     [0x00000000000002]: 7   ???                                 0x0000000000000002 0x0 + 2
     [tbox]: [error]: data: 0x7f9d5b058908, size: 10, patch: cc
-</code></pre><h3 id="memory-out-of-bounds-detection">Memory out of bounds detection</h3>
+</code></pre><h3 id="memoryoutofboundsdetection">Memory out of bounds detection</h3>
 <p>The detection of the out-of-boundary overflow is done in real time, and the libc is also instrumented, so the use of commonly used strcpy, memset, etc., is back to detect</p>
 <pre><code class="lang-c">    tb_void_t tb_demo_overflow()
     {
@@ -442,7 +442,7 @@ $ xmake
     [tbox]: ===================================================================================================================================================
     [tbox]: 00000000   00 00 00 00  00 00 00 00  00 00                                                                         ..........
     [tbox]: [error]: abort at tb_memset(): 255, libc/string/memset.c
-</code></pre><h3 id="memory-overlap-cover-detection">Memory Overlap Cover Detection</h3>
+</code></pre><h3 id="memoryoverlapcoverdetection">Memory Overlap Cover Detection</h3>
 <p>If the copy of the two memories overlaps, it may overwrite some of the data, causing a bug, so TBOX has also done some detection.</p>
 <pre><code class="lang-c">    tb_void_t tb_demo_overlap()
     {
@@ -475,7 +475,7 @@ $ xmake
     [tbox]: ===================================================================================================================================================
     [tbox]: 00000000   CC CC CC CC  CC CC CC CC  CC CC                                                                         ..........
     [tbox]: [error]: abort at tb_memcpy(): 125, libc/string/memcpy.c
-</code></pre><h3 id="memory-double-release-detection">Memory double release detection</h3>
+</code></pre><h3 id="memorydoublereleasedetection">Memory double release detection</h3>
 <pre><code class="lang-c">    tb_void_t tb_demo_free2()
     {
         tb_pointer_t data = tb_malloc0(10);

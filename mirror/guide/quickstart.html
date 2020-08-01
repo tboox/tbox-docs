@@ -28,21 +28,21 @@
 <article class="markdown-body">
 <h4>This is a mirror page, please see the original page: </h4><a href="https://tboox.io/#/guide/quickstart">https://tboox.io/#/guide/quickstart</a>
 </br>
-    <h2 id="ready-to-work">Ready to work</h2>
-<h3 id="installing-xmake">Installing xmake</h3>
+    <h2 id="readytowork">Ready to work</h2>
+<h3 id="installingxmake">Installing xmake</h3>
 <p>To compile the tbox source, you need to install the <a href="https://github.com/xmake-io/xmake">xmake</a> build tool first, because the entire tbox project is maintained by xmake, a cross-platform build tool.</p>
 <p>For how to install xmake, you can look at: <a href="https://xmake.io/#/guide/installation">xmake installation documentation</a></p>
 <p>The inside is very detailed, of course, under normal circumstances, the following installation methods can basically meet most of the installation scenarios, unless you want to compile and install the source code.</p>
-<h4 id="via-curl">via curl</h4>
+<h4 id="viacurl">via curl</h4>
 <pre><code class="lang-bash">bash <(curl -fsSL https://raw.githubusercontent.com/xmake-io/xmake/master/scripts/get.sh)
 </code></pre>
-<h4 id="via-wget">via wget</h4>
+<h4 id="viawget">via wget</h4>
 <pre><code class="lang-bash">bash <(wget https://raw.githubusercontent.com/xmake-io/xmake/master/scripts/get.sh -O -)
 </code></pre>
-<h4 id="via-powershell">via powershell</h4>
+<h4 id="viapowershell">via powershell</h4>
 <pre><code class="lang-bash">Invoke-Expression (Invoke-Webrequest &#39;https://raw.githubusercontent.com/xmake-io/xmake/master/scripts/get.ps1&#39; -UseBasicParsing).Content
 </code></pre>
-<h2 id="create-an-empty-project-with-tbox">Create an empty project with tbox</h2>
+<h2 id="createanemptyprojectwithtbox">Create an empty project with tbox</h2>
 <p>Xmake provides an empty project template with tbox, so you can create a tbox-based empty project via xmake to quickly integrate and compile the tbox library.</p>
 <p>We only need to execute the command:</p>
 <pre><code class="lang-bash">$ xmake create -t console_tbox test
@@ -76,7 +76,7 @@ tb_int_t main(tb_int_t argc, tb_char_t** argv)
     return 0;
 }
 </code></pre>
-<h2 id="compiling-project">Compiling project</h2>
+<h2 id="compilingproject">Compiling project</h2>
 <p>After the project is created, the next step is to compile. This step is also very simple. You only need to execute the xmake command to compile:</p>
 <pre><code class="lang-bash">$ xmake
 checking for the architecture ... x86_64
@@ -95,29 +95,29 @@ ruki:test ruki$ xmake -r
 build ok!👌
 </code></pre>
 <p>Xmake will automatically download the tbox library dependencies, and automatically install the integrated tbox library into the current project, the user does not need to care about any other details, just trust the code to call the tbox interface to achieve their own logic.</p>
-<h2 id="run-program">Run program</h2>
+<h2 id="runprogram">Run program</h2>
 <p>After compiling, you can complete the run by typing the following command:</p>
 <pre><code class="lang-bash">$ xmake run
 </code></pre>
-<h2 id="debug-program">Debug program</h2>
+<h2 id="debugprogram">Debug program</h2>
 <p>If you want to call the debugger such as gdb/lldb/vsjitdebugger to debug the program, just add the <code>-d</code> parameter when running, and turn on the debug compilation mode:</p>
 <pre><code class="lang-bash">$ xmake f -m debug
 $ xmake
 $ xmake run -d
 </code></pre>
 <p>Because the default compiled release mode, without debugging symbol information, so if you want to debug the program, you can first enable the debug mode to compile, then debug and run.</p>
-<h2 id="generate-ide-project-files">Generate IDE project files</h2>
-<h3 id="generate-vs-project">Generate vs project</h3>
+<h2 id="generateideprojectfiles">Generate IDE project files</h2>
+<h3 id="generatevsproject">Generate vs project</h3>
 <p>We can also develop and debug more conveniently by generating a vs project. The following command also generates a vc project with two compilation modes: debug and release.</p>
 <pre><code class="lang-bash">xmake project -k vs2017 -m "debug,release"
 </code></pre>
-<h3 id="generate-cmake-file">Generate cmake file</h3>
+<h3 id="generatecmakefile">Generate cmake file</h3>
 <pre><code class="lang-bash">xmake project -k cmakelists
 </code></pre>
-<h3 id="generate-makefile">Generate makefile</h3>
+<h3 id="generatemakefile">Generate makefile</h3>
 <pre><code class="lang-bash">xmake project -k makefile
 </code></pre>
-<h2 id="compile-source-code">Compile Source code</h2>
+<h2 id="compilesourcecode">Compile Source code</h2>
 <p>In addition to creating an empty project, using <code>add_requires("tbox")</code> in xmake.lua to quickly integrate tbox, we can also manually compile the integration through the current tbox source.</p>
 <p>First, we need to download the source code of tbox:</p>
 <pre><code class="lang-bash">git clone https://github.com/tboox/tbox.git
@@ -127,12 +127,12 @@ $ xmake run -d
 xmake
 </code></pre>
 <p>After compiling, we can get the corresponding library files and header files by installing or packaging.</p>
-<h3 id="install-library">Install library</h3>
+<h3 id="installlibrary">Install library</h3>
 <p>Through the installation, you can install the compiled library and header files to the system directory or specify the directory.</p>
 <pre><code class="lang-bash">xmake install 
 xmake install -o /xxx/installdir
 </code></pre>
-<h3 id="package-library">Package library</h3>
+<h3 id="packagelibrary">Package library</h3>
 <p>The above installation method can only install the corresponding arch library under one platform. If you want to switch the platform and architecture at the same time, compile and generate a series of library versions. This method is very cumbersome, so it can be completed by the packaging command.</p>
 <pre><code class="lang-bash">xmake f -p iphoneos -a armv7
 xmake
@@ -165,8 +165,8 @@ xmake package
 <p>If you want to cut to debug mode, generate all the arch packages at once, you can pass the configuration into:</p>
 <pre><code class="lang-bash">xmake macro package -p iphoneos -f "-m debug"
 </code></pre>
-<h3 id="integrate-library">Integrate library</h3>
-<h4 id="integrate-local-packages">Integrate local packages</h4>
+<h3 id="integratelibrary">Integrate library</h3>
+<h4 id="integratelocalpackages">Integrate local packages</h4>
 <p>The tbox.pkg package generated by the xmake package command can be directly referenced and integrated into our own project. Just set the corresponding header file search path and library path.</p>
 <p>And if it is in the xmake project, the integration is more convenient, just edit the xmake.lua file, plus two lines:</p>
 <pre><code class="lang-lua">add_packagedirs("packages")
@@ -188,7 +188,7 @@ target("test")
     add_files("src/*.c")
     add_packages("tbox")
 </code></pre>
-<h4 id="integrate-remote-dependency-package">Integrate Remote Dependency Package</h4>
+<h4 id="integrateremotedependencypackage">Integrate Remote Dependency Package</h4>
 <p>Of course, if you think that compiling the tbox library integration is rather cumbersome, you can use the remote dependency download mode mentioned above, xmake will handle the download compilation and integration of the tbox library.</p>
 <pre><code class="lang-lua">add_requires("tbox")
 add_rules("mode.debug", "mode.release")
@@ -210,7 +210,7 @@ add_requires("tbox >1.6.0")
 add_requires("tbox ~1.6.0")
 </code></pre>
 <p>The integration method is to support the semantic version dependency. For more information about the use of this block, you can look at the official documentation of xmake: [remote dependency mode] (<a href="https://xmake.io/#/zh-cn/guide/package_management">https://xmake.io/#/zh-cn/guide/package_management</a> ?id=%e8%bf%9c%e7%a8%8b%e4%be%9d%e8%b5%96%e6%a8%a1%e5%bc%8f)</p>
-<h3 id="module-configuration">Module Configuration</h3>
+<h3 id="moduleconfiguration">Module Configuration</h3>
 <p>The default compiled and integrated tbox library, compiled for small mode, does not have any extension modules. If you want to use some extensions, you need to manually enable them.</p>
 <p>For source code compilation, you can enable the corresponding module to compile tbox by:</p>
 <pre><code class="lang-bash">xmake f --xml=y --coroutine=y
@@ -219,7 +219,7 @@ xmake
 <p>For the remote dependency mode, it is convenient to enable the corresponding module. Change the dependency rule in xmake.lua:</p>
 <pre><code class="lang-lua">add_requires("tbox", {configs = {xml = true, coroutine = true}})
 </code></pre>
-<h3 id="code-example">Code Example</h3>
+<h3 id="codeexample">Code Example</h3>
 <p>In the <code>src/demo</code> source directory of tbox, the usage examples of each module are integrated. You can refer to the usage and familiarity with the use of different module interfaces. You can also refer to the interface comment description in the corresponding module header file for more information.</p>
 <p>The test run under the demo, you can enter the tbox root directory, compile and run through the following command:</p>
 <pre><code class="lang-bash">xmake run demo coroutine_http_server
@@ -245,13 +245,13 @@ xmake
 [demo]: testname: coroutine_spider
 ...
 </code></pre><p>It’s too long, it’s not listed here, everyone can look at it after running it.</p>
-<h3 id="debug-and-analysis">Debug and analysis</h3>
+<h3 id="debugandanalysis">Debug and analysis</h3>
 <p>In addition to debugging with the debugger, the debug version of the tbox library also has a large number of assert detections built in, as well as various memory analysis and detection methods, including memory leaks, memory out-of-bounds analysis, etc., relying on the memory pool allocator that comes with the tbox library. .</p>
 <p>Therefore, under normal circumstances, using the tbox library to write the program, as long as there is no error under the debug, basically the program is relatively stable.</p>
-<h4 id="assertion-detection">Assertion detection</h4>
+<h4 id="assertiondetection">Assertion detection</h4>
 <p>All interfaces in tbox are implemented, and a large number of asserts are added to judge the validity of the program state and the parameters. As long as the user passes the wrong parameters, the debug mode can basically report the first time, and even some heap overflow problems. Will even report it.</p>
 <p>It is convenient for the user to obtain the error information in the first time and locate all the locations of the fault code.</p>
-<h4 id="memory-out-of-bounds-detection">Memory out of bounds detection</h4>
+<h4 id="memoryoutofboundsdetection">Memory out of bounds detection</h4>
 <p>As long as the user finishes writing the program and enables the debug version to run the program, the program will automatically report an error when the memory is out of bounds.</p>
 <p>The detection of the out-of-boundary overflow is done in real time, and the libc is also instrumented, so the use of commonly used strcpy, memset, etc., is back to detect:</p>
 <pre><code class="lang-c">tb_void_t tb_demo_overflow()
@@ -286,7 +286,7 @@ xmake
 [tbox]: ===================================================================================================================================================
 [tbox]: 00000000   00 00 00 00  00 00 00 00  00 00                                                                         ..........
 [tbox]: [error]: abort at tb_memset(): 255, libc/string/memset.c
-</code></pre><h4 id="memory-leak-detection">Memory leak detection</h4>
+</code></pre><h4 id="memoryleakdetection">Memory leak detection</h4>
 <p>The detection of memory leaks must be executed when <code>tb_exit()</code> is called immediately before the program exits. If there is a leak, it will be output to the terminal in detail.</p>
 <pre><code class="lang-c">tb_void_t tb_demo_leak()
 {
@@ -305,7 +305,7 @@ xmake
 [tbox]: [error]:     [0x007fff8c95a5fd]: 6   libdyld.dylib                       0x00007fff8c95a5fd start + 1
 [tbox]: [error]:     [0x00000000000002]: 7   ???                                 0x0000000000000002 0x0 + 2
 [tbox]: [error]: data: 0x7f9d5b058908, size: 10, patch: cc
-</code></pre><h4 id="memory-overlap-cover-detection">Memory Overlap Cover Detection</h4>
+</code></pre><h4 id="memoryoverlapcoverdetection">Memory Overlap Cover Detection</h4>
 <p>If the copy of the two memories overlaps, it may overwrite some of the data, causing a bug, so TBOX has also done some detection.</p>
 <pre><code class="lang-c">tb_void_t tb_demo_overlap()
 {
@@ -338,7 +338,7 @@ xmake
 [tbox]: ===================================================================================================================================================
 [tbox]: 00000000   CC CC CC CC  CC CC CC CC  CC CC                                                                         ..........
 [tbox]: [error]: abort at tb_memcpy(): 125, libc/string/memcpy.c
-</code></pre><h4 id="memory-double-release-detection">Memory Double Release Detection</h4>
+</code></pre><h4 id="memorydoublereleasedetection">Memory Double Release Detection</h4>
 <pre><code class="lang-c">tb_void_t tb_demo_free2()
 {
     tb_pointer_t data = tb_malloc0(10);

@@ -29,29 +29,29 @@
 <h4>This is a mirror page, please see the original page: </h4><a href="https://tboox.io/#/manual/basic">https://tboox.io/#/manual/basic</a>
 </br>
     <h2 id="print">Print</h2>
-<h3 id="printing-info-information">Printing info information</h3>
+<h3 id="printinginfoinformation">Printing info information</h3>
 <p>Display a line of information under the terminal, it will automatically wrap, debugging, release mode will be displayed</p>
 <pre><code class="lang-c">tb_trace_i("hello world");
 </code></pre>
 <p>Display: <code>[tbox]: hello world</code></p>
 <p>!> Each line of output has a tag prefix to indicate which module information, the default is <code>[tbox]</code>, but can also be redefined by modifying the <code>tb_TRACE_PREFIX</code> macro.</p>
-<h3 id="print-debugging-information">Print debugging information</h3>
+<h3 id="printdebugginginformation">Print debugging information</h3>
 <p>Output debug information, only in debug mode.</p>
 <pre><code class="lang-c">tb_trace_d("hello world");
 </code></pre>
 <p>Display: <code>[tbox]: hello world</code></p>
 <p>!> The output will only be output when the debug mode is enabled: make config DEBUG=y, or if the module internally defines <code>TB_TRACE_MODULE_DEBUG == 1</code>, otherwise it will be ignored directly when compiling.</p>
-<h3 id="print-warning-message">Print warning message</h3>
+<h3 id="printwarningmessage">Print warning message</h3>
 <p>Output warning message, debugging and release mode will be displayed</p>
 <pre><code class="lang-c">tb_trace_w("hello world");
 </code></pre>
 <p>Display: <code>[tbox]: [warning]: hello world</code></p>
-<h3 id="print-other-information">Print other information</h3>
+<h3 id="printotherinformation">Print other information</h3>
 <p>Prompt that some features have not been implemented yet.</p>
 <pre><code class="lang-c">tb_trace_noimpl();
 </code></pre>
 <p>Display: <code>[tbox]: [no_impl]: at func: ..., line: ..., file: ...</code></p>
-<h3 id="print-by-module">Print by module</h3>
+<h3 id="printbymodule">Print by module</h3>
 <p>Output submodule tag</p>
 <pre><code class="lang-c">#define TB_TRACE_MODULE_NAME "module"
 #include "tbox.h"
@@ -59,16 +59,16 @@
 tb_trace_i("hello world");
 </code></pre>
 <p>Display: <code>[tbox]: [module]: hello world</code></p>
-<h3 id="output-to-file">Output to file</h3>
+<h3 id="outputtofile">Output to file</h3>
 <pre><code class="lang-c">tb_trace_mode_set(TB_TRACE_MODE_FILE);
 tb_trace_file_set_path("/tmp/log", tb_false);
 </code></pre>
 <p>It can be output to /tmp/log.</p>
-<h3 id="other-platform-output">Other platform output</h3>
+<h3 id="otherplatformoutput">Other platform output</h3>
 <p>In ios and android, in addition to output to the debug terminal, it will be directly output to syslog, which can be directly viewed through adb logcat or xcode.</p>
-<h2 id="assertion-and-detection">Assertion and detection</h2>
+<h2 id="assertionanddetection">Assertion and detection</h2>
 <p>Assertion is a fast and effective mechanism to detect and respond to errors during the debugging period. If you add some asserts at the input and output of each interface, you can find hidden bugs in the program early and improve development and debugging efficiency.</p>
-<h3 id="static-assertion">Static Assertion</h3>
+<h3 id="staticassertion">Static Assertion</h3>
 <p>Detection at compile time, generally used for type size, constant detection, for example:</p>
 <pre><code class="lang-c">tb_assert_static(sizeof(tb_byte_t) == 1);
 tb_assert_static(sizeof(tb_uint_t) == 4);
@@ -77,12 +77,12 @@ tb_assert_static(sizeof(tb_uint16_t) == 2);
 tb_assert_static(sizeof(tb_uint32_t) == 4);
 tb_assert_static(sizeof(tb_hize_t) == 8);
 </code></pre>
-<h3 id="runtime-assertion">Runtime assertion</h3>
+<h3 id="runtimeassertion">Runtime assertion</h3>
 <p>Detect in debug mode, valid only in debug mode, if <strong>tb_debug</strong> is not defined, the code will be ignored</p>
 <p>If the assertion fails, abort is fired and the full detailed current position stack is printed</p>
 <pre><code class="lang-c">tb_assert(x);
 </code></pre>
-<h3 id="runtime-check">Runtime check</h3>
+<h3 id="runtimecheck">Runtime check</h3>
 <p>Detect in release mode, regardless of whether it is in debug mode</p>
 <pre><code class="lang-c">tb_check_return(x);
 tb_check_return_val(x, v);
@@ -91,7 +91,7 @@ tb_check_break(x);
 tb_check_abort(x);
 tb_check_continue(x);
 </code></pre>
-<h3 id="assertion-and-check">Assertion and check</h3>
+<h3 id="assertionandcheck">Assertion and check</h3>
 <p>Simultaneous detection in debug and release mode</p>
 <pre><code class="lang-c">tb_assert_and_check_abort(x);
 tb_assert_and_check_return(x);

@@ -28,7 +28,7 @@
 <article class="markdown-body">
 <h4>This is a mirror page, please see the original page: </h4><a href="https://tboox.io/#/zh-cn/manual/stream">https://tboox.io/#/zh-cn/manual/stream</a>
 </br>
-    <h2 id="-">整体架构</h2>
+    <h2 id="">整体架构</h2>
 <p>tbox主要有三种流：</p>
 <ol>
 <li><strong>stream</strong>: 最常用的流，一般用于单路阻塞、非阻塞io的处理，接口简单易用</li>
@@ -56,10 +56,10 @@
 </ol>
 <p>具体架构见下图：</p>
 <p><img src="/assets/img/manual/streamarch.png" alt=""></p>
-<h2 id="-">流的读写</h2>
+<h2 id="">流的读写</h2>
 <p>stream是tbox的最常用的流，一般用于单路io操作，既可以进行阻塞读写，也可以非阻塞的读写。</p>
 <p>目前可以支持 数据、文件、套接字、http协议以及各种过滤器的读写操作，也可以很方便的自定义扩展自己的流模块。</p>
-<h3 id="-">流的常用初始化操作</h3>
+<h3 id="">流的常用初始化操作</h3>
 <p>下面直接上代码吧，基本上看下注释就知道怎么使用了，嘿嘿。。。</p>
 <pre><code class="lang-c">    // 初始化文件流
     tb_stream_ref_t stream = tb_stream_init_from_url("/root/home/file");
@@ -87,7 +87,7 @@
     // 初始化gzip解压缩流
     tb_stream_ref_t stream = tb_stream_init_filter_from_zip(stream, TB_ZIP_ALGO_GZIP, TB_ZIP_ACTION_INFLATE);
 </code></pre>
-<h3 id="-">非阻塞读取模式</h3>
+<h3 id="">非阻塞读取模式</h3>
 <pre><code class="lang-c">    // 初始化http流
     tb_stream_ref_t stream = tb_stream_init_from_url("https://tboox.org");
     if (stream)
@@ -131,7 +131,7 @@
         tb_stream_exit(stream);
     }
 </code></pre>
-<h3 id="-">阻塞读取模式</h3>
+<h3 id="">阻塞读取模式</h3>
 <pre><code class="lang-c">    // 初始化file流，支持windows、unix路径
     tb_stream_ref_t stream = tb_stream_init_from_url("C://home/file");
     if (stream)
@@ -179,20 +179,20 @@
         tb_stream_exit(stream);
     }
 </code></pre>
-<h3 id="-">阻塞读取一行数据</h3>
+<h3 id="">阻塞读取一行数据</h3>
 <pre><code class="lang-c">    // 失败返回：-1， 成功返回实际读取到的行大小
     tb_char_t line[8192] = {0};
     tb_long_t real = tb_stream_bread_line(stream, line, 8192);
 </code></pre>
-<h3 id="-">非阻塞模式写入</h3>
+<h3 id="">非阻塞模式写入</h3>
 <pre><code class="lang-c">    // real 位实际写入大小， 写入失败返回：-1
     tb_long_t real = tb_stream_writ(stream, data, size);
 </code></pre>
-<h3 id="-">阻塞模式写入</h3>
+<h3 id="">阻塞模式写入</h3>
 <pre><code class="lang-c">    // 写入失败返回 tb_false， 如果要中断写入，可以调用tb_stream_kill
     tb_bool_t ok = tb_stream_bwrit(stream, data, size);
 </code></pre>
-<h3 id="-">刷新同步数据到流</h3>
+<h3 id="">刷新同步数据到流</h3>
 <pre><code class="lang-c">    /* 同步结束数据到流，如果有尾部数据，则会写入， 一般在写完流结束是调用
      * 例如写gzip数据的尾部等等
      * 失败返回：tb_false
@@ -205,23 +205,23 @@
      */
     tb_bool_t ok = tb_stream_sync(stream, tb_false);
 </code></pre>
-<h3 id="-">阻塞写格式化字符数据到流</h3>
+<h3 id="">阻塞写格式化字符数据到流</h3>
 <pre><code class="lang-c">    // 失败返回：-1， 成功返回实际写入的数据大小
     tb_long_t real = tb_stream_printf("hello world: %s, %d\\n", "!", 12345678);
 </code></pre>
-<h3 id="-">阻塞写入一行数据到流</h3>
+<h3 id="">阻塞写入一行数据到流</h3>
 <pre><code class="lang-c">    // 失败返回： -1,  成功返回实际写入大小
     tb_long_t real = tb_stream_bwrit_line(stream, line, size);
 </code></pre>
-<h3 id="-">流的状态</h3>
+<h3 id="">流的状态</h3>
 <p>如果遇到流读取失败，或者打开失败的情况，想要知道具体失败原因可以通过以下方式：</p>
 <pre><code class="lang-c">    tb_size_t state = tb_stream_state(stream); 
 
     // 将状态码转成字符串
     tb_char_t const* state_cstr = tb_state_cstr(state);
 </code></pre>
-<h2 id="-">流使用示例</h2>
-<h3 id="-">通过流读写压缩文件</h3>
+<h2 id="">流使用示例</h2>
+<h3 id="">通过流读写压缩文件</h3>
 <p>这里为了使代码更加简洁，直接用了transfer来挂接两路流的传输操作。</p>
 <pre><code class="lang-c">    // 初始化文件输入流
     tb_stream_ref_t istream = tb_stream_init_from_url("/home/file.txt");
@@ -254,7 +254,7 @@
     if (istream) tb_stream_exit(istream);
     if (ostream) tb_stream_exit(ostream);
 </code></pre>
-<h3 id="-">自定义流实现</h3>
+<h3 id="">自定义流实现</h3>
 <p>tbox提供的这些内置stream模块，有时候没法完全咱们的实际需求，例如：</p>
 <p>我想读取一个实时数据流的缓存队列，这个数据流一段会不停的送入数据进来，另外一段会不停的读取数据，如果数据不够，就会进入等待</p>
 <p>这其实是个很有用的功能，我的很多需求都会用到，例如：流媒体的一些实时数据获取和复用等等。。</p>

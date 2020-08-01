@@ -28,10 +28,10 @@
 <article class="markdown-body">
 <h4>This is a mirror page, please see the original page: </h4><a href="https://tboox.io/#/zh-cn/manual/memory">https://tboox.io/#/zh-cn/manual/memory</a>
 </br>
-    <h2 id="-">内存整体架构</h2>
+    <h2 id="">内存整体架构</h2>
 <p>TBOX的内存管理模型，参考了linux kernel的内存管理机制，并在其基础上做了一些改进和优化。</p>
 <p><img src="https://tboox.org/static/img/tbox/memorypool.png" alt="内存池架构"></p>
-<h3 id="-large_pool">大块内存池：large_pool</h3>
+<h3 id="large_pool">大块内存池：large_pool</h3>
 <p>整个内存分配的最底层，都是基于large_pool的大块内存分配池，类似于linux的基于page的分配管理，不过有所不同的是，large_pool并没有像linux那样使用buddy算法进行(2^N)*page进行分配，这样如果需要2.1m的内存，需要分配4m的内存块，这样粒度太大，非常浪费。</p>
 <p>因此large_pool内部采用N*page的基于page_size为最小粒度进行分配，因此每次分配顶多浪费不到一页的空间。</p>
 <p>而且如果需要的内存不到整页，剩下的内存也会一并返回给上层，如果上层需要（比如small_pool），可以充分利用这多余的部分内存空间，使得内存利用率达到最优化。</p>
@@ -76,7 +76,7 @@
 </code></pre><p>由于通常不会分配太大块的内存，因此只要能够预测1m内存，就足够，而对于>1m的内存，这里也单独加了一个预测，来应对偶尔的超大块分配，并且使得整体分配流程更加的统一。</p>
 <p>如果当前级别的预测块不存在，则会到下一级别的预测块中查找，如果都找不到，才会去遍历整个内存池。</p>
 <p>实际测试下，每个块的预测成功基本都在95%以上，也就说大部分情况下，分配效率都是维持在O(1)级别的。</p>
-<h3 id="-small_pool">小块内存池：small_pool</h3>
+<h3 id="small_pool">小块内存池：small_pool</h3>
 <p>小块内存分配池</p>
 <p>在上层每次调用malloc进行内存分配的时候，会去判断需要多大的内存，如果这个内存超过或者等于一页，则会直接从large_pool进行分配，如果小于一页，则会优先通过small_pool进行分配，small_pool针对小块的内存进行了高速缓存，并优化了空间管理和分配效率。</p>
 <p>由于程序大部分情况下，都在使用小块内存，因此small_pool对内存的分配做了很大的分流，使得large_pool承受的压力减小，碎片量减少很多，而small_pool内部由于都是由fixed_pool来对固定大小的内存进行管理，是不会存在外部碎片的。而小块内存的粒度本身就很小，所以内部碎片量也相当少。</p>
@@ -107,7 +107,7 @@
     |    fixed pool: 3072B* |  2049-3072B* |  
      -------------------------------------- 
 </code></pre><p>其中 96B, 192B，384B，3072B并不是按2的整数幂大小，这么做主要是为了更加有效的利用小块内存的空间减少内部碎片。</p>
-<h3 id="-fixed_pool">固定块内存池：fixed_pool</h3>
+<h3 id="fixed_pool">固定块内存池：fixed_pool</h3>
 <p>顾名思义，fixed_pool就是用来管理固定大小的内存分配的，相当于linux中slub，而fixed_pool中又由多个slot组成，每个slot负责一块连续的内存空间，管理部分内存块的管理，类似linux中的slab， 每个slot由双链维护，并且参考linux的管理机制，分为三种slot管理方式：</p>
 <ol>
 <li>当前正在分配的slot</li>
@@ -186,12 +186,12 @@
 <p>fixed_pool每次增长一个包含256个32B内存块的slot（需要8192B大小+16B内部数据维护大小），其实在用large_pool分配的时候，需要8208B的大小，由于需要按页对齐（4KB），实际分配确占用了<code>8192+4096: 12288B</code>的大小的空间。</p>
 <p>但是large_pool支持把所有空间数据一并返回给上层，这样slot其实获取到了一个12288B大小的内存，并且也知道其实际大小为：12288B，因此实际切分了<code>(12288-(32B的slot内部维护数据))/32</code>也就是383个内存块。 </p>
 <p>多维护了127个内存块，充分把large_pool的内部碎片也利用上了，进一步增加了内存利用率。</p>
-<h3 id="fixed_pool-slot">fixed_pool中的slot</h3>
+<h3 id="fixed_poolslot">fixed_pool中的slot</h3>
 <p>虽然类比与linux中的slab，但是其数据结构确跟slab不太一样，它并没有像slab那样，对每个空闲小块都用链表维护，而是直接用位段来维护是否空闲的信息，这样更加节省内存，而且通过优化算法，其分配效率和slab几乎一样。</p>
 <p>在fixed_pool的slot的头部，专门有一小块独立的数据，用于维护每个小块的空闲信息，每个块只暂用一比特位的信息，来判断这个块是否空闲，由于没有内存块都是固定大小的，所以比特位的位置定位，完全可以通过索引计算得到。</p>
 <p>而且每次释放和分配，都会去缓存一个双字大小的位信息端，来预测下一次的分配，由于是双字大小，总共有32个比特位，所以每次缓存，最多可以预测邻近32个内存块。因此大部分情况下，预测成功率一直都是>98%的，分配效率都维持在O(1)，比起large_pool的预测率还高很多，所以small_pool对large_pool的分流，还在一定程度上，进一步提高了内存分配效率。</p>
 <p>而就算很倒霉，没预测成功，slot的顺序遍历来查找空闲快的算法，也相当高效，完全是高度优化的，下面就详细描述下。</p>
-<h4 id="slot-">slot的顺序遍历分配算法优化</h4>
+<h4 id="slot">slot的顺序遍历分配算法优化</h4>
 <p>我们这里主要用到了gcc的几个内置函数：</p>
 <ol>
 <li>__builtin_clz：计算32位整数前导0的个数</li>
@@ -227,14 +227,14 @@
 <li>如果某个位段不是0xffffffff，则通过__builtin_clz(~x)计算实际的空闲块索引，并进行实际的分配。</li>
 <li>最后如果这个的32位的位段没有被分配满，可以把它进行缓存，来为下次分配做预测。</li>
 </ol>
-<h3 id="-string_pool">字符串内存池：string_pool</h3>
+<h3 id="string_pool">字符串内存池：string_pool</h3>
 <p>讲到这，TBOX的内存池管理模型，基本算是大概讲完了，这里就简单提下string_pool，即：字符串池</p>
 <p>string_pool主要针对上层应用而言的，针对某些频繁使用小型字符串，并且重复率很高的模块，就可以通过string_pool进行优化，进一步减少内存使用，string_pool内部通过引用计数+哈希表维护，针对相同的字符串只保存一份。</p>
 <p>例如可以用于cookies中字符串维护、http中header部分的字符串维护等等。。</p>
-<h2 id="-">切换全局的内存分配器</h2>
+<h2 id="">切换全局的内存分配器</h2>
 <p>tbox的默认内存分配，是完全基于自己的内存池架构，支持内存的快速分配，和对碎片的优化，并且支持各种内存泄露、溢出检测。</p>
 <p>如果不想用tbox内置的默认内存分配管理，也可以灵活切换到其他分配模式，因为tbox现在已经完全支持allocator架构，<br>只要在init阶段传入不同的分配器模型，就能快速切换分配模式，例如：</p>
-<h3 id="-">默认内存分配器</h3>
+<h3 id="">默认内存分配器</h3>
 <p>tbox默认的初始化采用了默认的tbox内存管理，他会默认启用内存池维护、碎片优化、内存泄露溢出检测等所有特性。</p>
 <pre><code class="lang-c">tb_init(tb_null, tb_null);
 </code></pre>
@@ -244,22 +244,22 @@
 <p>默认的分配器，通常情况下都会直接调用系统malloc使用系统原生native内存，只是在此基础上多了层内存管理和内存检测支持，如果想要在一块连续内存上完全托管，可以使用下面的方式：</p>
 <pre><code class="lang-c">tb_init(tb_null, tb_default_allocator((tb_byte_t*)malloc(300 * 1024 * 1024), 300 * 1024 * 1024));
 </code></pre>
-<h3 id="-">静态内存分配器</h3>
+<h3 id="">静态内存分配器</h3>
 <p>我们也可以直接采用一整块静态buffer上进行维护，启用内存泄露溢出检测等所有特性，这个跟tb_default_allocator的区别就是，<br>这个分配器比较轻量，内部的数据结构简单，占用内存少，适合低资源环境，比如在一些嵌入式环境，用这个分配器资源利用率更高些。</p>
 <p>!> 但是这个allocator不支持碎片优化，容易产生碎片。</p>
 <pre><code class="lang-c">tb_init(tb_null, tb_static_allocator((tb_byte_t*)malloc(300 * 1024 * 1024), 300 * 1024 * 1024));
 </code></pre>
-<h3 id="-">原生内存分配器</h3>
+<h3 id="">原生内存分配器</h3>
 <p>完全使用系统native内存分配，内部不做任何处理和数据维护，所有特性依赖系统环境，所以内存池和内存检测等特性也是不支持的，相当于直接透传给了malloc等系统分配接口。</p>
 <p>用户可以根据自己的需要，如果不想使用tbox内置的内存池维护，就可以使用此分配器。</p>
 <pre><code class="lang-c">tb_init(tb_null, tb_native_allocator());
 </code></pre>
-<h3 id="-">虚拟内存分配器</h3>
+<h3 id="">虚拟内存分配器</h3>
 <p>v1.6.4版本之后，tbox新提供了一种分配器类型：虚拟内存分配器，主要用来分配一些超大块的内存。</p>
 <p>通常，用户并不需要它，因为tbox默认的内存分配器内部自动会对超大块的内存块，切换到虚拟内存池去分配，不过如果用户想要强制切换到虚拟内存分配，也可以通过下面的方式切换使用：</p>
 <pre><code class="lang-c">tb_init(tb_null, tb_virtual_allocator());
 </code></pre>
-<h3 id="-">自定义内存分配器</h3>
+<h3 id="">自定义内存分配器</h3>
 <p>如果觉得这些分配器还是不够用，可以自定义自己的内存分配器，让tbox去使用，自定义的方式也很简单，这里拿<code>tb_native_allocator</code>的实现代码为例：</p>
 <pre><code class="lang-c">static tb_pointer_t tb_native_allocator_malloc(tb_allocator_ref_t allocator, tb_size_t size __tb_debug_decl__)
 {
@@ -303,8 +303,8 @@ myallocator.free              = tb_native_allocator_free;
 tb_allocator_ralloc(&amp;myallocator, data, 100);
 tb_allocator_free(&amp;myallocator, data);
 </code></pre>
-<h2 id="-">内存分配接口</h2>
-<h3 id="-">数据分配接口</h3>
+<h2 id="">内存分配接口</h2>
+<h3 id="">数据分配接口</h3>
 <p>此类接口可以直接分配内存数据，不过返回的是<code>tb_pointer_t</code>类型数据，通过用户需要自己做类型强转才能访问。</p>
 <p>!> 其中malloc0这种后缀带0字样的接口，分配的内存会自动做内存清0操作。</p>
 <pre><code class="lang-c">tb_free(data)                               
@@ -314,14 +314,14 @@ tb_nalloc(item, size)
 tb_nalloc0(item, size)                      
 tb_ralloc(data, size)                       
 </code></pre>
-<h3 id="-">字符串分配接口</h3>
+<h3 id="">字符串分配接口</h3>
 <p>tbox也提供了字符串类型的便捷分配，操作的数据类型直接就是<code>tb_char_t*</code>，省去了额外的强转过程。</p>
 <pre><code>tb_malloc_cstr(size)                        
 tb_malloc0_cstr(size)                       
 tb_nalloc_cstr(item, size)                  
 tb_nalloc0_cstr(item, size)                 
 tb_ralloc_cstr(data, size)                  
-</code></pre><h3 id="-">字节数据分配接口</h3>
+</code></pre><h3 id="">字节数据分配接口</h3>
 <p>这个也是数据分配接口，唯一的区别就是，默认做了<code>tb_byte_t*</code>类型的强转处理，访问数据读写访问。</p>
 <pre><code class="lang-c">tb_malloc_bytes(size)                       
 tb_malloc0_bytes(size)                      
@@ -329,7 +329,7 @@ tb_nalloc_bytes(item, size)
 tb_nalloc0_bytes(item, size)                
 tb_ralloc_bytes(data, size)                 
 </code></pre>
-<h3 id="struct-">struct结构数据分配接口</h3>
+<h3 id="struct">struct结构数据分配接口</h3>
 <p>如果要分配一些struct数据，那么此类接口自带了struct类型强转处理。</p>
 <pre><code class="lang-c">tb_malloc_type(type)                        
 tb_malloc0_type(type)                       
@@ -352,7 +352,7 @@ if (data)
 }
 </code></pre>
 <p>可以看到，我们省去了类型转换过程，所以这是个提供一定便利性的辅助接口。</p>
-<h3 id="-">地址对齐数据分配接口</h3>
+<h3 id="">地址对齐数据分配接口</h3>
 <p>如果我们有时候要求分配出来的内存数据地址，必须是按照指定大小对齐过的，就可以使用此类接口：</p>
 <pre><code class="lang-c">tb_align_free(data)                         
 tb_align_malloc(size, align)                
@@ -382,13 +382,13 @@ tb_align_ralloc(data, size, align)
 #   define tb_align8_ralloc(data, size)             tb_align_ralloc((tb_pointer_t)data, size, 8)
 #endif
 </code></pre>
-<h2 id="-">内存检测</h2>
+<h2 id="">内存检测</h2>
 <p>TBOX的内存分配在调试模式下，可以检测支持内存泄露和越界，而且还能精确定位到出问题的那块内存具体分配位置，和函数调用堆栈。 </p>
 <p>要使用tbox的内存检测功能，只需要切换到debug模式编译：</p>
 <pre><code class="lang-bash">$ xmake f -m debug
 $ xmake
 </code></pre>
-<h3 id="-">内存泄露检测</h3>
+<h3 id="">内存泄露检测</h3>
 <p>!> 泄露检测，必须在程序完整退出，确保调用了<code>tb_exit()</code>接口后才能触发检测。</p>
 <p>内存泄露的检测必须在程序退出的前一刻，调用tb_exit()的时候，才会执行，如果有泄露，会有详细输出到终端上。</p>
 <pre><code class="lang-c">    tb_void_t tb_demo_leak()
@@ -408,7 +408,7 @@ $ xmake
     [tbox]: [error]:     [0x007fff8c95a5fd]: 6   libdyld.dylib                       0x00007fff8c95a5fd start + 1
     [tbox]: [error]:     [0x00000000000002]: 7   ???                                 0x0000000000000002 0x0 + 2
     [tbox]: [error]: data: 0x7f9d5b058908, size: 10, patch: cc
-</code></pre><h3 id="-">内存越界检测</h3>
+</code></pre><h3 id="">内存越界检测</h3>
 <p>越界溢出的检测，是实时完成的，而且对libc也做了插桩，所以对常用strcpy，memset等的使用，都会去检测</p>
 <pre><code class="lang-c">    tb_void_t tb_demo_overflow()
     {
@@ -442,7 +442,7 @@ $ xmake
     [tbox]: ===================================================================================================================================================
     [tbox]: 00000000   00 00 00 00  00 00 00 00  00 00                                                                         ..........
     [tbox]: [error]: abort at tb_memset(): 255, libc/string/memset.c
-</code></pre><h3 id="-">内存重叠覆盖检测</h3>
+</code></pre><h3 id="">内存重叠覆盖检测</h3>
 <p>如果两块内存的copy发生了重叠，有可能会覆盖掉部分数据，导致bug，因此TBOX对此也做了些检测。</p>
 <pre><code class="lang-c">    tb_void_t tb_demo_overlap()
     {
@@ -475,7 +475,7 @@ $ xmake
     [tbox]: ===================================================================================================================================================
     [tbox]: 00000000   CC CC CC CC  CC CC CC CC  CC CC                                                                         ..........
     [tbox]: [error]: abort at tb_memcpy(): 125, libc/string/memcpy.c
-</code></pre><h3 id="-">内存双重释放检测</h3>
+</code></pre><h3 id="">内存双重释放检测</h3>
 <pre><code class="lang-c">    tb_void_t tb_demo_free2()
     {
         tb_pointer_t data = tb_malloc0(10);
