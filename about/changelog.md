@@ -1,3 +1,14 @@
+## v1.6.6
+
+### New features
+
+* Support *BSD system, e.g. FreeBSD ..
+
+### Changes
+
+* Support to change the current directory for process
+* Support stdin for creating process
+* Fix some compilation errors for mingw
 
 ## v1.6.5
 
