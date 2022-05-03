@@ -28,7 +28,51 @@
 <article class="markdown-body">
 <h4>This is a mirror page, please see the original page: </h4><a href="https://tboox.io/#/about/changelog">https://tboox.io/#/about/changelog</a>
 </br>
-    <h2 id="v166">v1.6.6</h2>
+    <h2 id="v168">v1.6.8</h2>
+<h3 id="">改进</h3>
+<ul>
+<li>添加 riscv32/riscv64/sh4/sparc 架构支持</li>
+<li>改进路径支持</li>
+<li>为 socket 添加 peer name 接口</li>
+</ul>
+<h3 id="bugs">Bugs 修复</h3>
+<ul>
+<li><a href="https://github.com/tboox/tbox/issues/178">#178</a>: 修复协程在 windows/x86 上栈溢出问题</li>
+</ul>
+<h2 id="v167">v1.6.7</h2>
+<h3 id="">改进</h3>
+<ul>
+<li>改进协程，增加对 mingw 支持</li>
+<li>改进 process poller 支持在 windows 上等待更多进程</li>
+</ul>
+<h3 id="bugs">Bugs 修复</h3>
+<ul>
+<li><a href="https://github.com/tboox/tbox/issues/175">#175</a>: 修复协程在 windows 上崩溃</li>
+<li>修复一些编译问题</li>
+</ul>
+<h2 id="v168">v1.6.8</h2>
+<h3 id="changes">Changes</h3>
+<ul>
+<li>Add riscv32/riscv64/sh4/sparc support</li>
+<li>Improve path support</li>
+<li>Add peer name for socket</li>
+</ul>
+<h3 id="bugsfixed">Bugs Fixed</h3>
+<ul>
+<li><a href="https://github.com/tboox/tbox/issues/178">#178</a>: Fix coroutine on windows/x86</li>
+</ul>
+<h2 id="v167">v1.6.7</h2>
+<h3 id="changes">Changes</h3>
+<ul>
+<li>Support coroutine for mingw</li>
+<li>Improve process poller to support to wait more processes on windows</li>
+</ul>
+<h3 id="bugsfixed">Bugs Fixed</h3>
+<ul>
+<li><a href="https://github.com/tboox/tbox/issues/175">#175</a>: Fix coroutine crash on windows</li>
+<li>Fix some compilation errors</li>
+</ul>
+<h2 id="v166">v1.6.6</h2>
 <h3 id="newfeatures">New features</h3>
 <ul>
 <li>Support *BSD system, e.g. FreeBSD ..</li>
