@@ -27,6 +27,7 @@ If you would like to support the development of tbox, welcome to donate to us.
 
 | date       | supporter                             | pay    | money  | commnet                    |
 |--          | --                                    | --     | --     | --                         |
+| 2022.09.23 | 翅膀                                  | wechat | ¥100   | tbox 支持，感谢            |
 | 2019.03.12 | 翅膀                                  | wechat | ¥50    |                            |
 | 2019.01.31 | 翅膀                                  | wechat | ¥100   |                            |
 | 2019.01.10 | 翅膀                                  | wechat | ¥50    |                            |
