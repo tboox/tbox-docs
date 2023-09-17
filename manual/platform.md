@@ -5,15 +5,19 @@
 Given a vaild path, opening a regular file:
 
 ```c
-const char* path = "/path/to/file"
+const char* path = "/path/to/file";
 tb_size_t mode = TB_FILE_MODE_RW; //see below;
-tb_file_ref_t fout= tb_file_init (path, mode);
-if (fout != tb_null){
+tb_file_ref_t fout = tb_file_init(path, mode);
+if (fout != tb_null)
+{
     // operate on fout
-    if(!tb_file_close(fout)){
+    if (!tb_file_close(fout))
+    {
         // handle failure during closing file
     };
-} else {
+}
+else
+{
     // handle failure during opening file
 }
 ```
@@ -75,11 +79,14 @@ File can be opened with modes shown shown below, or arbitary combination with th
 
 Detect whether a file can be read and write:
 ```c
-const char* path = "/path/to/file"
+const char* path = "/path/to/file";
 tb_size_t mode = TB_FILE_MODE_RW;
-if(tb_file_access (path, mode)){
+if (tb_file_access(path, mode))
+{
     // read and write given file
-}else{
+}
+else
+{
     // handle error
 };
 ```
