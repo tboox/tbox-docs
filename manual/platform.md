@@ -5,9 +5,8 @@
 Given a vaild path, opening a regular file:
 
 ```c
-const char* path = "/path/to/file";
 tb_size_t mode = TB_FILE_MODE_RW; //see below;
-tb_file_ref_t file = tb_file_init(path, mode);
+tb_file_ref_t file = tb_file_init("/path/to/file", mode);
 if (file)
 {
     // operate on file
