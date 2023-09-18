@@ -5,13 +5,12 @@
 通过合法路径打开普通文件：
 
 ```c
-const char* path = "/path/to/file";
 tb_size_t mode = TB_FILE_MODE_RW; //see below;
-tb_file_ref_t file = tb_file_init(path, mode);
+tb_file_ref_t file = tb_file_init("/path/to/file", mode);
 if (file)
 {
-    // operate on fout
-    tb_file_close(fout)
+    // operate on file
+    tb_file_close(file)
 }
 ```
 路径以UTF-8编码，调用者必须关闭由`tb_file_init`打开的文件。
