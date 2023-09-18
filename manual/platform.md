@@ -10,8 +10,8 @@ tb_size_t mode = TB_FILE_MODE_RW; //see below;
 tb_file_ref_t file = tb_file_init(path, mode);
 if (file)
 {
-    // operate on fout
-    tb_file_close(fout)
+    // operate on file
+    tb_file_close(file)
 }
 ```
 
